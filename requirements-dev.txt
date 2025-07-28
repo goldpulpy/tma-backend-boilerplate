@@ -1,4 +1,3 @@
-black==25.1.0
+ruff==0.12.5
 isort==6.0.1
 pyright==1.1.403
-pylint==3.3.7

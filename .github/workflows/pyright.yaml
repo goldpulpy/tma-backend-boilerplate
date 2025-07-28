@@ -23,4 +23,4 @@ jobs:
           pip install pyright
       - name: Run pyright
         run: |
-          pyright .
+          pyright src/

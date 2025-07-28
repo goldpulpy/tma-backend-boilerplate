@@ -59,7 +59,7 @@ ALLOWED_ORIGINS=["*"] # in production to set up your frontend.
 
 # JWT Env
 JWT_ALGORITHM=HS256
-JWT_SECRET=YOUR_JWT_SECRET
+JWT_SECRET=YOUR_JWT_SECRET # min 32 characters
 
 # Postgres Env
 DB_HOST=POSTGRES_HOST
@@ -89,18 +89,19 @@ PYTHONPATH=src python -m backend
 
 ## 🛠️ Makefile Commands
 
-| Command                             | Description                       |
-| ----------------------------------- | --------------------------------- |
-| `make venv`                         | Create virtual environment        |
-| `make install`                      | Install dependencies              |
-| `make create-migration m='Message'` | Create a new migration            |
-| `make migrate`                      | Apply all pending migrations      |
-| `make rollback-migration`           | Rollback the last migration       |
-| `make db-reset`                     | Reset the database                |
-| `make clean`                        | Clean the development environment |
-| `make lint`                         | Run pylint for code analysis      |
-| `make type-check`                   | Run pyright for type checking     |
-| `make format`                       | Format code with isort and black  |
+| Command                             | Description                                      |
+| ----------------------------------- | ------------------------------------------------ |
+| `make venv`                         | Create virtual environment                       |
+| `make install`                      | Install dependencies                             |
+| `make create-migration m='Message'` | Create a new migration                           |
+| `make migrate`                      | Apply all pending migrations                     |
+| `make rollback-migration`           | Rollback the last migration                      |
+| `make db-reset`                     | Reset the database                               |
+| `make clean`                        | Clean the development environment                |
+| `make lint`                         | Run pylint for code analysis                     |
+| `make type-check`                   | Run pyright for type checking                    |
+| `make format`                       | Format code with isort and black                 |
+| `make pre-commit`                   | Run pre-commit checks (format, lint, type-check) |
 
 ## 🧪 Code Quality Tools
 

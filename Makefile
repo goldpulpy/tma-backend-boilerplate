@@ -34,6 +34,7 @@ help:
 	@echo "  $(GREEN)format$(NC) - Format code (isort, black)"
 	@echo "  $(GREEN)lint$(NC) - Lint code (pylint)"
 	@echo "  $(GREEN)type-check$(NC) - Type check code (pyright)"
+	@echo "  $(GREEN)pre-commit$(NC) - Run pre-commit checks (format, lint, type-check)"
 	@echo ""
 
 .PHONY: venv
@@ -96,20 +97,21 @@ db-reset:
 clean:
 	@echo "$(YELLOW)Cleaning development environment...$(NC)"
 	@rm -rf $(VENV)
+	@rm -rf .ruff_cache
 	@find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	@echo "$(GREEN)Development environment cleaned!$(NC)"
 
 .PHONY: format
 format:
 	@echo "$(YELLOW)Formatting code...$(NC)"
-	@isort --remove-redundant-aliases $(SOURCE_DIR)
-	@black --line-length 79 $(SOURCE_DIR)
+	@isort $(SOURCE_DIR)
+	@ruff format $(SOURCE_DIR) --line-length 79
 	@echo "$(GREEN)Code formatted successfully!$(NC)"
 
 .PHONY: lint
 lint:
 	@echo "$(YELLOW)Linting code...$(NC)"
-	@pylint $(SOURCE_DIR)
+	@ruff check $(SOURCE_DIR) --fix
 	@echo "$(GREEN)Code linted successfully!$(NC)"
 
 .PHONY: type-check
@@ -117,3 +119,7 @@ type-check:
 	@echo "$(YELLOW)Type checking code...$(NC)"
 	@pyright $(SOURCE_DIR)
 	@echo "$(GREEN)Code type checked successfully!$(NC)"
+
+.PHONY: pre-commit
+pre-commit: format lint type-check
+	@echo "$(GREEN)Pre-commit checks completed successfully!$(NC)"
