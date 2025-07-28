@@ -55,7 +55,7 @@ Create or copy `.env.example` to `.env` file in the project root:
 # APP Env
 ENVIRONMENT=development # or production
 BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
-ALLOWED_ORIGIN=* # in production to set up your frontend.
+ALLOWED_ORIGINS=["*"] # in production to set up your frontend.
 
 # JWT Env
 JWT_ALGORITHM=HS256
@@ -98,6 +98,20 @@ PYTHONPATH=src python -m backend
 | `make rollback-migration`           | Rollback the last migration       |
 | `make db-reset`                     | Reset the database                |
 | `make clean`                        | Clean the development environment |
+| `make lint`                         | Run pylint for code analysis      |
+| `make type-check`                   | Run pyright for type checking     |
+| `make format`                       | Format code with isort and black  |
+
+## 🧪 Code Quality Tools
+
+The project uses several tools to ensure code quality:
+
+- **Black** - Code formatter that enforces a consistent style
+- **isort** - Import statement organizer
+- **Pylint** - Static code analyzer for error detection and coding standard enforcement
+- **Pyright** - Static type checker for Python
+
+Run these tools using the commands listed in the Makefile Commands section.
 
 ## 📁 Project Structure
 

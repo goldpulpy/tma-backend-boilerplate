@@ -1,28 +1,31 @@
 """Config module"""
-import time
+
 from enum import Enum
+from typing import ClassVar
+
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Environment(str, Enum):
     """Environment enum"""
+
     DEVELOPMENT = "development"
     PRODUCTION = "production"
 
 
 class BaseConfig(BaseSettings):
     """Base config class"""
-    model_config = SettingsConfigDict(
-        extra="ignore",
-        frozen=True
-    )
+
+    model_config = SettingsConfigDict(extra="ignore", frozen=True)
 
 
 class APPConfig(BaseConfig):
     """APP config class"""
+
     bot_token: str
-    allowed_origin: str
-    environment: Environment
+    allowed_origins: list[str]
+    environment: Environment = Environment.DEVELOPMENT
 
     @property
     def is_production(self) -> bool:
@@ -37,28 +40,26 @@ class APPConfig(BaseConfig):
 
 class JWTConfig(BaseConfig):
     """JWT config class"""
-    secret: str
+
+    secret: str = Field(min_length=32)
     algorithm: str = "HS256"
 
     model_config = SettingsConfigDict(
-        env_prefix="JWT_",
-        extra="ignore",
-        frozen=True
+        env_prefix="JWT_", extra="ignore", frozen=True
     )
 
 
 class DBConfig(BaseConfig):
     """DB config class"""
-    host: str
-    port: int
+
+    host: str = "localhost"
+    port: int = Field(default=5432, ge=1, le=65535)
     user: str
     password: str
     name: str
 
     model_config = SettingsConfigDict(
-        env_prefix="DB_",
-        extra="ignore",
-        frozen=True
+        env_prefix="DB_", extra="ignore", frozen=True
     )
 
     @property
@@ -70,12 +71,12 @@ class DBConfig(BaseConfig):
         )
 
 
-class Config(BaseConfig):
-    """Application config class"""
-    app: APPConfig = APPConfig()
-    jwt: JWTConfig = JWTConfig()
-    db: DBConfig = DBConfig()
+class Config:
+    """Global application config"""
+
+    app: ClassVar[APPConfig] = APPConfig()  # type: ignore[call-arg]
+    jwt: ClassVar[JWTConfig] = JWTConfig()  # type: ignore[call-arg]
+    db: ClassVar[DBConfig] = DBConfig()  # type: ignore[call-arg]
 
 
-time.tzset()
 config = Config()
