@@ -105,13 +105,22 @@ PYTHONPATH=src python -m backend
 src/
 ├── alembic/                 # Database migrations
 ├── backend/
-│   ├── domain/              # Business logic and domain models
-│   ├── app/                 # Application (API endpoints, routers)
+│   ├── domain/              # Domain layer
+│   │   ├── entities/        # Entities
+│   │   ├── exceptions/      # Exceptions
+│   │   ├── repositories/    # Repositories interface
+│   │   └── value_objects/   # Value objects
+│   ├── application/         # Application layer (API endpoints, routers)
+│   │   ├── dtos/            # Data Transfer Objects
+│   │   ├── services/        # Services interface
+│   │   └── use_cases/       # Use cases
 │   ├── presentation/        # Presentation layer (API endpoints, routers)
 │   │   └── api/             # API endpoints, routers (v1)
-│   ├── infrastructure/      # External services (DB)
-│   │   └── database/        # Database models
-│   ├── containers/          # DI containers
+│   ├── infrastructure/      # Infrastructure layer
+│   │   ├── database/        # Database models
+│   │   ├── repositories/    # Repositories implementation
+│   │   └── services/        # Services implementation
+│   ├── containers/          # Dependency Injection containers
 │   └── shared/              # Shared resources (config, logger, etc.)
 └── alembic.ini              # Alembic configuration
 ```
@@ -119,3 +128,7 @@ src/
 ## 📄 License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) file for more information.
+
+<div align="center">
+  <p>Created with ❤️ by <a href="https://github.com/goldpulpy">goldpulpy</a></p>
+</div>
