@@ -29,6 +29,11 @@ class APPConfig(BaseConfig):
         """Check if the environment is production"""
         return self.environment == Environment.PRODUCTION
 
+    @property
+    def is_development(self) -> bool:
+        """Check if the environment is development"""
+        return self.environment == Environment.DEVELOPMENT
+
 
 class JWTConfig(BaseConfig):
     """JWT config class"""

@@ -15,6 +15,7 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - **Alembic** - Database migration management
 - **Dependency Injector** - Dependency injection container
 - **DDD approach** - Project structure based on Domain-Driven Design
+- **Scalar** - API reference generator
 
 ## 📋 Prerequisites
 
@@ -104,23 +105,16 @@ PYTHONPATH=src python -m backend
 src/
 ├── alembic/                 # Database migrations
 ├── backend/
-│   ├── app/                 # Application (API endpoints, routers)
-│   ├── containers/          # DI containers
 │   ├── domain/              # Business logic and domain models
-│   └── infrastructure/      # External services (DB, API)
-│       └── database/
-│           ├── adapters/    # Repositories for DB operations
-│           └── models/      # Database models
+│   ├── app/                 # Application (API endpoints, routers)
+│   ├── presentation/        # Presentation layer (API endpoints, routers)
+│   │   └── api/             # API endpoints, routers (v1)
+│   ├── infrastructure/      # External services (DB)
+│   │   └── database/        # Database models
+│   ├── containers/          # DI containers
+│   └── shared/              # Shared resources (config, logger, etc.)
 └── alembic.ini              # Alembic configuration
 ```
-
-## 📝 Usage Examples
-
-### Creating a New Endpoint
-
-1. Create data models in `src/backend/infrastructure/database/models/`
-2. Define services in `src/backend/domain/`
-3. Add an endpoint in `src/backend/app/`
 
 ## 📄 License
 
