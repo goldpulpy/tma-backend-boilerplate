@@ -100,7 +100,7 @@ PYTHONPATH=src python -m backend
 | `make clean`                        | 🧹 Clean the development environment                |
 | `make lint`                         | 🔍 Run ruff for code analysis                       |
 | `make type-check`                   | ✓ Run pyright for type checking                     |
-| `make format`                       | ✨ Format code with isort and ruff                  |
+| `make format`                       | ✨ Format code with ruff                            |
 | `make pre-commit`                   | 🔄 Run pre-commit checks (format, lint, type-check) |
 
 ## 🧪 Code Quality Tools
@@ -108,7 +108,6 @@ PYTHONPATH=src python -m backend
 The project uses several tools to ensure code quality:
 
 - **Ruff** - 🧹 Code formatter that enforces a consistent style and linting
-- **isort** - 📋 Import statement organizer
 - **Pyright** - 🔍 Static type checker for Python
 
 Run these tools using the commands listed in the Makefile Commands section.
@@ -118,7 +117,6 @@ Run these tools using the commands listed in the Makefile Commands section.
 This project uses pre-commit hooks to ensure code quality before committing changes. The pre-commit configuration automatically runs:
 
 - **Ruff** - 🧹 For linting and formatting
-- **isort** - 📋 To sort imports
 - **pyright** - 🔍 For type checking
 
 ### 🔧 Installation

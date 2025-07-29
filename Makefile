@@ -104,14 +104,13 @@ clean:
 .PHONY: format
 format:
 	@echo "$(YELLOW)Formatting code...$(NC)"
-	@isort $(SOURCE_DIR) --line-length 79 --profile black
 	@ruff format $(SOURCE_DIR) --line-length 79
 	@echo "$(GREEN)Code formatted successfully!$(NC)"
 
 .PHONY: lint
 lint:
 	@echo "$(YELLOW)Linting code...$(NC)"
-	@ruff check $(SOURCE_DIR) --fix
+	@ruff check $(SOURCE_DIR) --select=E,F,I,B,UP,SIM,PERF --fix --line-length 79
 	@echo "$(GREEN)Code linted successfully!$(NC)"
 
 .PHONY: type-check

@@ -1,12 +1,6 @@
 repos:
   - repo: local
     hooks:
-      - id: isort
-        name: isort
-        entry: bash -c 'source .venv/bin/activate && isort --line-length 79 --profile black src/'
-        language: system
-        types: [python]
-
       - id: ruff-format
         name: ruff format
         entry: bash -c 'source .venv/bin/activate && ruff format --line-length 79 src/'
@@ -15,8 +9,7 @@ repos:
 
       - id: ruff
         name: ruff
-        entry: bash -c 'source .venv/bin/activate && ruff check src/'
-        args: [--fix, --exit-non-zero-on-fix]
+        entry: bash -c 'source .venv/bin/activate && ruff check src/ --select=E,F,I,B,UP,SIM,PERF --fix --line-length 79'
         language: system
         types: [python]
 
