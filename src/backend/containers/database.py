@@ -1,10 +1,12 @@
 """Database container."""
+
 from dependency_injector import containers, providers
 from sqlalchemy.ext.asyncio import (
-    create_async_engine,
     AsyncSession,
     async_sessionmaker,
+    create_async_engine,
 )
+
 from backend.shared import config
 
 

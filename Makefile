@@ -30,8 +30,13 @@ help:
 	@echo "  $(GREEN)db-current$(NC) - Show current database revision"
 	@echo "  $(GREEN)db-reset$(NC) - Reset database"
 	@echo ""
+	@echo "$(YELLOW)Code Quality:$(NC)"
+	@echo "  $(GREEN)format$(NC) - Format code (isort, black)"
+	@echo "  $(GREEN)lint$(NC) - Lint code (pylint)"
+	@echo "  $(GREEN)type-check$(NC) - Type check code (pyright)"
+	@echo "  $(GREEN)pre-commit$(NC) - Run pre-commit checks (format, lint, type-check)"
+	@echo ""
 
-# Environment Setup
 .PHONY: venv
 venv:
 	@echo "$(YELLOW)Creating virtual environment...$(NC)"
@@ -43,9 +48,9 @@ install: venv
 	@echo "$(YELLOW)Installing dependencies...$(NC)"
 	@$(PIP) install --upgrade pip
 	@$(PIP) install -r requirements.txt
+	@$(PIP) install -r requirements-dev.txt
 	@echo "$(GREEN)Dependencies installed successfully!$(NC)"
 
-# Database Operations
 .PHONY: create-migration
 create-migration:
 	@if [ -z "$(m)" ]; then \
@@ -88,10 +93,33 @@ db-reset:
 	@cd $(SOURCE_DIR) && alembic upgrade head
 	@echo "$(GREEN)Database reset successfully!$(NC)"
 
-# Cleanup
 .PHONY: clean
 clean:
 	@echo "$(YELLOW)Cleaning development environment...$(NC)"
 	@rm -rf $(VENV)
+	@rm -rf .ruff_cache
 	@find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	@echo "$(GREEN)Development environment cleaned!$(NC)"
+
+.PHONY: format
+format:
+	@echo "$(YELLOW)Formatting code...$(NC)"
+	@isort $(SOURCE_DIR) --line-length 79 --profile black
+	@ruff format $(SOURCE_DIR) --line-length 79
+	@echo "$(GREEN)Code formatted successfully!$(NC)"
+
+.PHONY: lint
+lint:
+	@echo "$(YELLOW)Linting code...$(NC)"
+	@ruff check $(SOURCE_DIR) --fix
+	@echo "$(GREEN)Code linted successfully!$(NC)"
+
+.PHONY: type-check
+type-check:
+	@echo "$(YELLOW)Type checking code...$(NC)"
+	@pyright $(SOURCE_DIR)
+	@echo "$(GREEN)Code type checked successfully!$(NC)"
+
+.PHONY: pre-commit
+pre-commit: format lint type-check
+	@echo "$(GREEN)Pre-commit checks completed successfully!$(NC)"

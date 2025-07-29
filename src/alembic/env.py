@@ -1,13 +1,13 @@
+# pylint: disable=no-member,unused-import
 """Alembic environment."""
+
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-
+from backend.infrastructure.database import models  # noqa: F401
 from backend.infrastructure.database.base import Base
-from backend.infrastructure.database import models
 from backend.shared import config
 
 # this is the Alembic Config object, which provides
