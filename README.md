@@ -26,14 +26,14 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 
 ### 💻 Local Development
 
-1. **Clone the repository** 📥
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/goldpulpy/tma-backend-boilerplate.git
 cd tma-backend-boilerplate
 ```
 
-2. **Setup environment** 🛠️
+2. **Setup environment**
 
 ```bash
 make install
@@ -44,10 +44,10 @@ or
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt -r requirements-dev.txt
 ```
 
-3. **Configure environment variables** ⚙️
+3. **Configure environment variables**
 
 Create or copy `.env.example` to `.env` file in the project root:
 
@@ -69,19 +69,19 @@ DB_PASSWORD=POSTGRES_PASSWORD
 DB_NAME=POSTGRES_DATABASE_NAME
 ```
 
-4. **Activate virtual environment** 🔌
+4. **Activate virtual environment**
 
 ```bash
 source .venv/bin/activate
 ```
 
-5. **Run migrations** 📊
+5. **Run migrations**
 
 ```bash
 make migrate
 ```
 
-6. **Start the application** 🚀
+6. **Start the application**
 
 ```bash
 PYTHONPATH=src python -m backend
@@ -125,18 +125,13 @@ This project uses pre-commit hooks to ensure code quality before committing chan
 
 To install the pre-commit hooks:
 
-Note: You need to have the virtual environment activated. ⚠️
-If you don't have the virtual environment activated, you can activate it with:
-
-```bash
-source .venv/bin/activate
-```
+**Note:** You need to have the virtual environment activated.
 
 ```bash
 pre-commit install
 ```
 
-After installation, the hooks will automatically run on every commit. If any issues are found, the commit will be blocked until they're fixed. ✅
+After installation, the hooks will automatically run on every commit. If any issues are found, the commit will be blocked until they're fixed.
 
 You can manually run all pre-commit hooks on all files with:
 
@@ -144,7 +139,7 @@ You can manually run all pre-commit hooks on all files with:
 pre-commit run --all-files
 ```
 
-Note: The `make pre-commit` command runs similar checks but doesn't integrate with git hooks.
+**Note:** The `make pre-commit` command runs similar checks but doesn't integrate with git hooks.
 
 ## 📁 Project Structure
 
