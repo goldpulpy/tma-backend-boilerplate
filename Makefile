@@ -104,7 +104,7 @@ clean:
 .PHONY: format
 format:
 	@echo "$(YELLOW)Formatting code...$(NC)"
-	@isort $(SOURCE_DIR)
+	@isort $(SOURCE_DIR) --line-length 79 --profile black
 	@ruff format $(SOURCE_DIR) --line-length 79
 	@echo "$(GREEN)Code formatted successfully!$(NC)"
 

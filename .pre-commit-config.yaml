@@ -1,0 +1,29 @@
+repos:
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: bash -c 'source .venv/bin/activate && isort --line-length 79 --profile black src/'
+        language: system
+        types: [python]
+
+      - id: ruff-format
+        name: ruff format
+        entry: bash -c 'source .venv/bin/activate && ruff format --line-length 79 src/'
+        language: system
+        types: [python]
+
+      - id: ruff
+        name: ruff
+        entry: bash -c 'source .venv/bin/activate && ruff check src/'
+        args: [--fix, --exit-non-zero-on-fix]
+        language: system
+        types: [python]
+
+      - id: pyright
+        name: pyright
+        entry: bash -c 'source .venv/bin/activate && pyright src/'
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
