@@ -9,5 +9,5 @@ class Container(containers.DeclarativeContainer):
     """Main DI container."""
 
     db: providers.Container[DatabaseContainer] = providers.Container(
-        DatabaseContainer
+        DatabaseContainer,
     )
