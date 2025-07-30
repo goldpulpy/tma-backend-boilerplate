@@ -1,22 +1,22 @@
-FROM python:3.12-alpine as builder
+FROM python:3.12-alpine AS builder
 
-RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo rust \
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    libffi-dev \
     && python -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip
 
 ENV PATH="/opt/venv/bin:$PATH"
-
 ENV PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-FROM python:3.12-alpine as production
+FROM python:3.12-alpine AS production
 
 RUN apk add --no-cache \
-    libffi \
-    openssl \
     curl \
     && rm -rf /var/cache/apk/*
 
