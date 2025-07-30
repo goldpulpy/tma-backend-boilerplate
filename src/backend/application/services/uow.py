@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 if TYPE_CHECKING:
     from types import TracebackType
@@ -17,7 +17,7 @@ class IUnitOfWork(ABC):
     users: IUserRepository
 
     @abstractmethod
-    async def __aenter__(self) -> IUnitOfWork:
+    async def __aenter__(self) -> Self:
         """Enter async context manager."""
 
     @abstractmethod

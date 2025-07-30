@@ -3,8 +3,8 @@
 from dependency_injector import containers, providers
 
 from backend.containers.database import DatabaseContainer
-from backend.containers.service import ServiceContainer
-from backend.containers.use_case import UseCaseContainer
+from backend.containers.services import ServiceContainer
+from backend.containers.use_cases import UseCaseContainer
 
 
 class Container(containers.DeclarativeContainer):
