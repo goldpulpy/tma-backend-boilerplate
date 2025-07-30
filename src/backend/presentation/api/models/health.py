@@ -7,3 +7,4 @@ class HealthCheckResponse(BaseModel):
     """Health check response."""
 
     status: str
+    timestamp: int
