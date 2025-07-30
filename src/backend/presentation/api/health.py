@@ -16,7 +16,6 @@ limiter = Container.service.limiter()
 
 @router.get(
     "/health",
-    response_model=HealthCheckResponse,
     status_code=status.HTTP_200_OK,
     summary="Health check endpoint",
     description="Check the health of the service",
@@ -25,12 +24,12 @@ limiter = Container.service.limiter()
 @limiter.limit("1/second")
 @inject
 async def health_check(
-    request: Request,
+    request: Request,  # noqa: ARG001
     use_case: Annotated[
         IHealthCheckUseCase,
         Depends(Provide[Container.use_case.health_check]),
     ],
-):
+) -> HealthCheckResponse:
     """Health check endpoint."""
     health_status = await use_case.execute()
 

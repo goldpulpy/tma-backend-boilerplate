@@ -30,7 +30,7 @@ app = FastAPI(
     openapi_url=None if config.app.is_production else "/openapi.json",
 )
 
-app.state.limiter = Container.service.limiter()  # type: ignore
+app.state.limiter = Container.service.limiter()  # type: ignore[attr-defined]
 app.add_exception_handler(RateLimitExceeded, rate_limit_handler)
 
 
@@ -50,4 +50,4 @@ if config.app.is_development:
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)  # noqa: S104

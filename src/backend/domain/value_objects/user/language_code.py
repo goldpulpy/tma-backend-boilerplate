@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+from backend.domain.constants.user import LANGUAGE_CODE_LENGTH
+
 
 @dataclass(frozen=True)
 class LanguageCode:
@@ -15,8 +17,10 @@ class LanguageCode:
             msg = "Language code must be a string"
             raise TypeError(msg)
 
-        if len(self.value) != 2:
-            msg = "Language code must be 2 characters long"
+        if len(self.value) != LANGUAGE_CODE_LENGTH:
+            msg = (
+                f"Language code must be {LANGUAGE_CODE_LENGTH} characters long"
+            )
             raise ValueError(msg)
 
         if not self.value.isalpha():

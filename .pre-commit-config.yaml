@@ -9,7 +9,7 @@ repos:
 
       - id: ruff
         name: ruff
-        entry: bash -c 'source .venv/bin/activate && ruff check src/ --select=E,F,I,B,UP,SIM,PERF --fix --line-length 79'
+        entry: bash -c 'source .venv/bin/activate && ruff check src/ --select=E,F,I,B,UP,N,SIM,PERF --fix --line-length 79'
         language: system
         types: [python]
 

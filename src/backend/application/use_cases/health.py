@@ -25,6 +25,7 @@ class HealthCheckUseCase(IHealthCheckUseCase):
         self,
         database_health_check_service: IDatabaseHealthCheckService,
     ) -> None:
+        """Initialize the health check use case."""
         self.db_health_check = database_health_check_service
 
     async def execute(self) -> HealthServiceStatus:

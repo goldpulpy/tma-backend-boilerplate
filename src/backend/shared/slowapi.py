@@ -6,7 +6,7 @@ from slowapi.errors import RateLimitExceeded
 
 
 async def rate_limit_handler(
-    request: Request,
+    request: Request,  # noqa: ARG001
     exc: Exception,
 ) -> Response:
     """Rate limit handler."""

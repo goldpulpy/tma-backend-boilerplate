@@ -1,4 +1,5 @@
 """User last name value object."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

@@ -1,16 +1,13 @@
 """User exceptions."""
 
 
-class UserNotFound(Exception):
+class UserNotFoundError(Exception):
     """User not found exception."""
 
 
-
-class UserAlreadyExists(Exception):
+class UserAlreadyExistsError(Exception):
     """User already exists exception."""
 
 
-
-class UserInvalid(Exception):
+class UserInvalidError(Exception):
     """User invalid exception."""
-
