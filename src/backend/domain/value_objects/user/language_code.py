@@ -34,7 +34,7 @@ class LanguageCode:
 
     def __str__(self) -> str:
         """Return the string representation of the language code."""
-        return self.value
+        return self.value or ""
 
     def __repr__(self) -> str:
         """Return the string representation of the language code."""
