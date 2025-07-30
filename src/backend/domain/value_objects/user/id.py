@@ -12,10 +12,12 @@ class UserId:
     def __post_init__(self) -> None:
         """Post-init validation."""
         if not isinstance(self.value, int):
-            raise TypeError("User ID must be an integer")
+            msg = "User ID must be an integer"
+            raise TypeError(msg)
 
         if self.value < 0:
-            raise ValueError("User ID must be positive")
+            msg = "User ID must be positive"
+            raise ValueError(msg)
 
     def __str__(self) -> str:
         """Return the string representation of the user ID."""

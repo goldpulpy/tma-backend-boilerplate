@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from scalar_fastapi import get_scalar_api_reference
 
 
-def setup_scalar(app: FastAPI):
+def setup_scalar(app: FastAPI) -> None:
     """Setup documentation for the app.
 
     Args:

@@ -24,7 +24,7 @@ class HealthCheckUseCase(IHealthCheckUseCase):
     def __init__(
         self,
         database_health_check_service: IDatabaseHealthCheckService,
-    ):
+    ) -> None:
         self.db_health_check = database_health_check_service
 
     async def execute(self) -> HealthServiceStatus:

@@ -1,7 +1,7 @@
 """User photo URL value object."""
+from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 from urllib.parse import urlparse
 
 
@@ -9,21 +9,24 @@ from urllib.parse import urlparse
 class PhotoUrl:
     """User photo URL value object."""
 
-    value: Optional[str] = None
+    value: str | None = None
 
     def __post_init__(self) -> None:
         """Post init."""
         if self.value:
             if not isinstance(self.value, str):
-                raise TypeError("Photo URL must be a string")
+                msg = "Photo URL must be a string"
+                raise TypeError(msg)
 
             parsed = urlparse(self.value)
             if parsed.scheme != "https" or not parsed.netloc:
-                raise ValueError("Photo URL must be a valid HTTPS URL")
+                msg = "Photo URL must be a valid HTTPS URL"
+                raise ValueError(msg)
 
             if not self.value.startswith("https://t.me/i/userpic/"):
+                msg = "Photo URL must be a valid Telegram userpic URL"
                 raise ValueError(
-                    "Photo URL must be a valid Telegram userpic URL",
+                    msg,
                 )
 
     def __str__(self) -> str:

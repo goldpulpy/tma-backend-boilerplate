@@ -1,4 +1,4 @@
-"""Shared module"""
+"""Shared module."""
 
 from ._config import config
 

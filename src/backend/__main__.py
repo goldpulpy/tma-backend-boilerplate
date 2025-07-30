@@ -1,4 +1,4 @@
-"""Main entry point for the application"""
+"""Main entry point for the application."""
 
 import logging
 

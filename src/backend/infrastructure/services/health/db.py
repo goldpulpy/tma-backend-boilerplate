@@ -18,7 +18,7 @@ class DatabaseHealthCheckService(IDatabaseHealthCheckService):
     def __init__(
         self,
         session_factory: async_sessionmaker[AsyncSession],
-    ):
+    ) -> None:
         self.session_factory = session_factory
 
     async def check_connection(self, timeout: float = 5.0) -> bool:
@@ -34,10 +34,10 @@ class DatabaseHealthCheckService(IDatabaseHealthCheckService):
                     return is_ok
 
         except (SQLAlchemyError, ConnectionError) as e:
-            logger.error("Database health check failed: %s", e)
+            logger.exception("Database health check failed: %s", e)
             return False
         except Exception as e:
-            logger.error(
+            logger.exception(
                 "Unexpected error during database health check: %s",
                 e,
             )

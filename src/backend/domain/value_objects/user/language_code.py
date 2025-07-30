@@ -12,13 +12,16 @@ class LanguageCode:
     def __post_init__(self) -> None:
         """Validate the user language code."""
         if not isinstance(self.value, str):
-            raise TypeError("Language code must be a string")
+            msg = "Language code must be a string"
+            raise TypeError(msg)
 
         if len(self.value) != 2:
-            raise ValueError("Language code must be 2 characters long")
+            msg = "Language code must be 2 characters long"
+            raise ValueError(msg)
 
         if not self.value.isalpha():
-            raise ValueError("Language code must be alphabetic")
+            msg = "Language code must be alphabetic"
+            raise ValueError(msg)
 
     def __str__(self) -> str:
         """Return the string representation of the language code."""
