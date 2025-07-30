@@ -139,6 +139,11 @@ pre-commit run --all-files
 
 **Note:** The `make pre-commit` command runs similar checks but doesn't integrate with git hooks.
 
+## 📄 Base points
+
+- `/health` - health check endpoint
+- `/docs` - API reference documentation (only in development mode)
+
 ## 📁 Project Structure
 
 ```
