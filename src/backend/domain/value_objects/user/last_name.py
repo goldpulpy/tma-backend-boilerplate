@@ -13,14 +13,16 @@ class LastName:
 
     def __post_init__(self) -> None:
         """Post init."""
-        if self.value:
-            if not isinstance(self.value, str):
-                msg = "Last name must be a string"
-                raise TypeError(msg)
+        if self.value is None:
+            return
 
-            if not self.value.strip():
-                msg = "Last name cannot be empty"
-                raise ValueError(msg)
+        if not isinstance(self.value, str):
+            msg = "Last name must be a string"
+            raise TypeError(msg)
+
+        if not self.value.strip():
+            msg = "Last name cannot be empty"
+            raise ValueError(msg)
 
     def __str__(self) -> str:
         """Return the string representation of the last name."""

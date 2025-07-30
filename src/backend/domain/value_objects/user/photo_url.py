@@ -14,21 +14,23 @@ class PhotoUrl:
 
     def __post_init__(self) -> None:
         """Post init."""
-        if self.value:
-            if not isinstance(self.value, str):
-                msg = "Photo URL must be a string"
-                raise TypeError(msg)
+        if self.value is None:
+            return
 
-            parsed = urlparse(self.value)
-            if parsed.scheme != "https" or not parsed.netloc:
-                msg = "Photo URL must be a valid HTTPS URL"
-                raise ValueError(msg)
+        if not isinstance(self.value, str):
+            msg = "Photo URL must be a string"
+            raise TypeError(msg)
 
-            if not self.value.startswith("https://t.me/i/userpic/"):
-                msg = "Photo URL must be a valid Telegram userpic URL"
-                raise ValueError(
-                    msg,
-                )
+        parsed = urlparse(self.value)
+        if parsed.scheme != "https" or not parsed.netloc:
+            msg = "Photo URL must be a valid HTTPS URL"
+            raise ValueError(msg)
+
+        if not self.value.startswith("https://t.me/i/userpic/"):
+            msg = "Photo URL must be a valid Telegram userpic URL"
+            raise ValueError(
+                msg,
+            )
 
     def __str__(self) -> str:
         """Return the string representation of the photo URL."""

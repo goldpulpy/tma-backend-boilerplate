@@ -1,5 +1,7 @@
 """User language code value object."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from backend.domain.constants.user import LANGUAGE_CODE_LENGTH
@@ -9,10 +11,13 @@ from backend.domain.constants.user import LANGUAGE_CODE_LENGTH
 class LanguageCode:
     """User language code value object."""
 
-    value: str
+    value: str | None = None
 
     def __post_init__(self) -> None:
         """Validate the user language code."""
+        if self.value is None:
+            return
+
         if not isinstance(self.value, str):
             msg = "Language code must be a string"
             raise TypeError(msg)
