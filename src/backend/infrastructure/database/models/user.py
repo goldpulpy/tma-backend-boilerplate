@@ -7,7 +7,7 @@ from sqlalchemy import TIMESTAMP, BigInteger, Column, String
 from backend.infrastructure.database.base import Base
 
 
-class User(Base):
+class UserModel(Base):
     """User model."""
 
     __tablename__ = "users"

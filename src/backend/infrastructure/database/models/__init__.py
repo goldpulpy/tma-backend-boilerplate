@@ -1,5 +1,5 @@
 """Database models."""
 
-from .user import User
+from .user import UserModel
 
-__all__ = ("User",)
+__all__ = ("UserModel",)
