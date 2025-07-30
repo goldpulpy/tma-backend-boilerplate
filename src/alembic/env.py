@@ -5,7 +5,7 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
 
-from alembic import context  # type: ignore[attr-defined]
+from alembic import context
 from backend.infrastructure.database import models  # noqa: F401
 from backend.infrastructure.database.base import Base
 from backend.shared import config
