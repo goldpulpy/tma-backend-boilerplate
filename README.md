@@ -17,6 +17,7 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - **DDD approach** - 🏗️ Project structure based on Domain-Driven Design
 - **Scalar** - 📚 API reference generator
 - **SlowAPI** - 🛡️ Rate limiting for API endpoints
+- **JWT** - 🔒 JSON Web Token for authentication
 
 ## 📋 Prerequisites
 
@@ -102,6 +103,51 @@ make run
 | `make format`                       | ✨ Format code with ruff                            |
 | `make pre-commit`                   | 🔄 Run pre-commit checks (format, lint, type-check) |
 
+## 📄 Base points
+
+### 🔄 Service endpoints
+
+- GET `/health` - health check endpoint
+- GET `/docs` - API reference documentation (only in development mode)
+
+### 🔒 Authentication endpoints (v1)
+
+- POST `/api/v1/auth/telegram` - authenticate via Telegram Mini App init_data
+- POST `/api/v1/auth/refresh` - refresh access token using refresh_token
+
+**Authentication Flow:**
+
+1. Client sends `init_data` from Telegram WebApp
+2. Server validates and returns JWT tokens as httpOnly cookies
+3. `access_token` (15min) - for API requests
+4. `refresh_token` (7d) - for token renewal
+
+## 📁 Project Structure
+
+```
+src/
+├── alembic/                 # Database migrations
+├── backend/
+│   ├── domain/              # Domain layer
+│   │   ├── entities/        # Entities
+│   │   ├── exceptions/      # Exceptions
+│   │   ├── repositories/    # Repositories interface
+│   │   └── value_objects/   # Value objects
+│   ├── application/         # Application layer (API endpoints, routers)
+│   │   ├── dtos/            # Data Transfer Objects
+│   │   ├── services/        # Services interface
+│   │   └── use_cases/       # Use cases
+│   ├── presentation/        # Presentation layer (API endpoints, routers)
+│   │   └── api/             # API endpoints, routers (v1)
+│   ├── infrastructure/      # Infrastructure layer
+│   │   ├── database/        # Database models
+│   │   ├── repositories/    # Repositories implementation
+│   │   └── services/        # Services implementation
+│   ├── containers/          # Dependency Injection containers
+│   └── shared/              # Shared resources (config, logger, slowapi, etc.)
+└── alembic.ini              # Alembic configuration
+```
+
 ## 🧪 Code Quality Tools
 
 The project uses several tools to ensure code quality:
@@ -137,37 +183,6 @@ pre-commit run --all-files
 ```
 
 **Note:** The `make pre-commit` command runs similar checks but doesn't integrate with git hooks.
-
-## 📄 Base points
-
-- `/health` - health check endpoint
-- `/docs` - API reference documentation (only in development mode)
-
-## 📁 Project Structure
-
-```
-src/
-├── alembic/                 # Database migrations
-├── backend/
-│   ├── domain/              # Domain layer
-│   │   ├── entities/        # Entities
-│   │   ├── exceptions/      # Exceptions
-│   │   ├── repositories/    # Repositories interface
-│   │   └── value_objects/   # Value objects
-│   ├── application/         # Application layer (API endpoints, routers)
-│   │   ├── dtos/            # Data Transfer Objects
-│   │   ├── services/        # Services interface
-│   │   └── use_cases/       # Use cases
-│   ├── presentation/        # Presentation layer (API endpoints, routers)
-│   │   └── api/             # API endpoints, routers (v1)
-│   ├── infrastructure/      # Infrastructure layer
-│   │   ├── database/        # Database models
-│   │   ├── repositories/    # Repositories implementation
-│   │   └── services/        # Services implementation
-│   ├── containers/          # Dependency Injection containers
-│   └── shared/              # Shared resources (config, logger, slowapi, etc.)
-└── alembic.ini              # Alembic configuration
-```
 
 ## 📄 License
 
