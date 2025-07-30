@@ -16,6 +16,7 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - **Dependency Injector** - 💉 Dependency injection container
 - **DDD approach** - 🏗️ Project structure based on Domain-Driven Design
 - **Scalar** - 📚 API reference generator
+- **SlowAPI** - 🛡️ Rate limiting for API endpoints
 
 ## 📋 Prerequisites
 
@@ -166,7 +167,7 @@ src/
 │   │   ├── repositories/    # Repositories implementation
 │   │   └── services/        # Services implementation
 │   ├── containers/          # Dependency Injection containers
-│   └── shared/              # Shared resources (config, logger, etc.)
+│   └── shared/              # Shared resources (config, logger, slowapi, etc.)
 └── alembic.ini              # Alembic configuration
 ```
 

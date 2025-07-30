@@ -4,13 +4,14 @@ import time
 from typing import Annotated
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from backend.application.use_cases.health import IHealthCheckUseCase
 from backend.containers import Container
 from backend.presentation.api.models.health import HealthCheckResponse
 
 router = APIRouter(tags=["Health"])
+limiter = Container.service.limiter()
 
 
 @router.get(
@@ -21,8 +22,10 @@ router = APIRouter(tags=["Health"])
     description="Check the health of the service",
     response_description="Health check response",
 )
+@limiter.limit("1/second")
 @inject
 async def health_check(
+    request: Request,
     use_case: Annotated[
         IHealthCheckUseCase,
         Depends(Provide[Container.use_case.health_check]),

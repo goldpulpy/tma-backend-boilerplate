@@ -5,17 +5,20 @@ import logging
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi.errors import RateLimitExceeded
 
 from backend.containers import Container
 from backend.presentation import api
 from backend.presentation.api import docs, health
 from backend.shared import config
+from backend.shared.slowapi import rate_limit_handler
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.INFO if config.app.is_production else logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
+
 
 container = Container()
 container.wire(packages=[api])
@@ -27,8 +30,10 @@ app = FastAPI(
     openapi_url=None if config.app.is_production else "/openapi.json",
 )
 
+app.state.limiter = Container.service.limiter()  # type: ignore
+app.add_exception_handler(RateLimitExceeded, rate_limit_handler)
 
-app.container = container  # type: ignore
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.app.allowed_origins,

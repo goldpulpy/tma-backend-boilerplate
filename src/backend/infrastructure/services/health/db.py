@@ -22,12 +22,16 @@ class DatabaseHealthCheckService(IDatabaseHealthCheckService):
         self.session_factory = session_factory
 
     async def check_connection(self, timeout: float = 5.0) -> bool:
+        """Check database connection."""
+        logger.debug("Checking database connection...")
         try:
             async with asyncio.timeout(timeout):
                 async with self.session_factory() as session:
                     result = await session.execute(text("SELECT 1"))
                     value = result.scalar()
-                    return value == 1
+                    is_ok = value == 1
+                    logger.debug("Database health check result: %s", is_ok)
+                    return is_ok
 
         except (SQLAlchemyError, ConnectionError) as e:
             logger.error("Database health check failed: %s", e)
