@@ -45,7 +45,9 @@ class JWTConfig(BaseConfig):
     algorithm: str = "HS256"
 
     model_config = SettingsConfigDict(
-        env_prefix="JWT_", extra="ignore", frozen=True
+        env_prefix="JWT_",
+        extra="ignore",
+        frozen=True,
     )
 
 
@@ -59,7 +61,9 @@ class DBConfig(BaseConfig):
     name: str
 
     model_config = SettingsConfigDict(
-        env_prefix="DB_", extra="ignore", frozen=True
+        env_prefix="DB_",
+        extra="ignore",
+        frozen=True,
     )
 
     @property

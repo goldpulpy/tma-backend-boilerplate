@@ -23,4 +23,4 @@ jobs:
           pip install ruff
       - name: Analysing the code with ruff
         run: |
-          ruff check src/
+          ruff check src/ --line-length 79 --select=E,F,I,B,UP,SIM,PERF

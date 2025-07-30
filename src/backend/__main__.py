@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.containers import Container
 from backend.presentation import api
-from backend.presentation.api import docs
+from backend.presentation.api import docs, health
 from backend.shared import config
 
 logging.basicConfig(
@@ -38,6 +38,8 @@ app.add_middleware(
 )
 
 app.include_router(api.router)
+app.include_router(health.router)
+
 if config.app.is_development:
     docs.setup_scalar(app)
 

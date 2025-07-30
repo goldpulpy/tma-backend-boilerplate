@@ -5,8 +5,7 @@ from scalar_fastapi import get_scalar_api_reference
 
 
 def setup_scalar(app: FastAPI):
-    """
-    Setup documentation for the app.
+    """Setup documentation for the app.
 
     :param app: FastAPI app
     :return: None
@@ -14,8 +13,7 @@ def setup_scalar(app: FastAPI):
 
     @app.get("/docs", include_in_schema=False)
     async def api_documentation():
-        """
-        Scalar API reference.
+        """Scalar API reference.
 
         :return: Scalar API reference
         """

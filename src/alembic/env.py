@@ -30,7 +30,8 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 alembic_config.set_main_option(
-    "sqlalchemy.url", config.db.url.replace("asyncpg", "psycopg2")
+    "sqlalchemy.url",
+    config.db.url.replace("asyncpg", "psycopg2"),
 )
 
 
@@ -73,7 +74,8 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
         )
 
         with context.begin_transaction():
