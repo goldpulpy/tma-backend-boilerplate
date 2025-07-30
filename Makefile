@@ -22,6 +22,9 @@ help:
 	@echo "  $(GREEN)install$(NC) - Install dependencies"
 	@echo "  $(GREEN)clean$(NC) - Clean development environment"
 	@echo ""
+	@echo "$(YELLOW)Application:$(NC)"
+	@echo "  $(GREEN)run$(NC) - Run application"
+	@echo ""
 	@echo "$(YELLOW)Database:$(NC)"
 	@echo "  $(GREEN)create-migration$(NC) - Create a new migration"
 	@echo "  $(GREEN)migrate$(NC) - Apply all pending migrations"
@@ -31,8 +34,8 @@ help:
 	@echo "  $(GREEN)db-reset$(NC) - Reset database"
 	@echo ""
 	@echo "$(YELLOW)Code Quality:$(NC)"
-	@echo "  $(GREEN)format$(NC) - Format code (isort, black)"
-	@echo "  $(GREEN)lint$(NC) - Lint code (pylint)"
+	@echo "  $(GREEN)format$(NC) - Format code (ruff)"
+	@echo "  $(GREEN)lint$(NC) - Lint code (ruff)"
 	@echo "  $(GREEN)type-check$(NC) - Type check code (pyright)"
 	@echo "  $(GREEN)pre-commit$(NC) - Run pre-commit checks (format, lint, type-check)"
 	@echo ""
@@ -50,6 +53,20 @@ install: venv
 	@$(PIP) install -r requirements.txt
 	@$(PIP) install -r requirements-dev.txt
 	@echo "$(GREEN)Dependencies installed successfully!$(NC)"
+
+.PHONY: run
+run:
+	@echo "$(YELLOW)Running application...$(NC)"
+	@PYTHONPATH=src python -m backend
+
+.PHONY: clean
+clean:
+	@echo "$(YELLOW)Cleaning development environment...$(NC)"
+	@rm -rf $(VENV)
+	@rm -rf .ruff_cache
+	@find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+	@echo "$(GREEN)Development environment cleaned!$(NC)"
+
 
 .PHONY: create-migration
 create-migration:
@@ -92,14 +109,6 @@ db-reset:
 	@cd $(SOURCE_DIR) && alembic downgrade base
 	@cd $(SOURCE_DIR) && alembic upgrade head
 	@echo "$(GREEN)Database reset successfully!$(NC)"
-
-.PHONY: clean
-clean:
-	@echo "$(YELLOW)Cleaning development environment...$(NC)"
-	@rm -rf $(VENV)
-	@rm -rf .ruff_cache
-	@find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
-	@echo "$(GREEN)Development environment cleaned!$(NC)"
 
 .PHONY: format
 format:

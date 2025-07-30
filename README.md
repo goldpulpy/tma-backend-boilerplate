@@ -21,7 +21,8 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 ## 📋 Prerequisites
 
 - 🐍 Python 3.12+
-- 🐘 PostgreSQL (for local development)
+- 🐘 PostgreSQL
+- ⚙️ Make (used for convenient command execution during development)
 
 ## 🚀 Quick Start
 
@@ -38,14 +39,6 @@ cd tma-backend-boilerplate
 
 ```bash
 make install
-```
-
-or
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt -r requirements-dev.txt
 ```
 
 3. **Configure environment variables**
@@ -72,6 +65,8 @@ DB_NAME=POSTGRES_DATABASE_NAME
 
 4. **Activate virtual environment**
 
+**Note:** You need to have the virtual environment activated.
+
 ```bash
 source .venv/bin/activate
 ```
@@ -85,7 +80,7 @@ make migrate
 6. **Start the application**
 
 ```bash
-PYTHONPATH=src python -m backend
+make run
 ```
 
 ## 🛠️ Makefile Commands
@@ -94,11 +89,12 @@ PYTHONPATH=src python -m backend
 | ----------------------------------- | --------------------------------------------------- |
 | `make venv`                         | 🔧 Create virtual environment                       |
 | `make install`                      | 📦 Install dependencies                             |
+| `make clean`                        | 🧹 Clean the development environment                |
+| `make run`                          | 🚀 Run the application                              |
 | `make create-migration m='Message'` | ➕ Create a new migration                           |
 | `make migrate`                      | 🔄 Apply all pending migrations                     |
 | `make rollback-migration`           | ⏪ Rollback the last migration                      |
 | `make db-reset`                     | 🗑️ Reset the database                               |
-| `make clean`                        | 🧹 Clean the development environment                |
 | `make lint`                         | 🔍 Run ruff for code analysis                       |
 | `make type-check`                   | ✓ Run pyright for type checking                     |
 | `make format`                       | ✨ Format code with ruff                            |
