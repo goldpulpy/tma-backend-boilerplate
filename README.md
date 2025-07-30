@@ -47,9 +47,11 @@ Create or copy `.env.example` to `.env` file in the project root:
 
 ```bash
 # APP Env
+HOST=0.0.0.0 # default
+PORT=5000 # default
+ALLOWED_ORIGINS=["*"] # in production to set up your frontend.
 ENVIRONMENT=development # or production
 BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
-ALLOWED_ORIGINS=["*"] # in production to set up your frontend.
 
 # JWT Env
 JWT_ALGORITHM=HS256

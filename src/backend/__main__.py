@@ -50,4 +50,4 @@ if config.app.is_development:
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)  # noqa: S104
+    uvicorn.run(app, host=config.app.host, port=config.app.port)
