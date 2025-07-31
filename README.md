@@ -50,7 +50,7 @@ Create or copy `.env.example` to `.env` file in the project root:
 # APP Env
 HOST=0.0.0.0 # Optional, default is 0.0.0.0
 PORT=5000 # Optional, default is 5000
-ALLOWED_ORIGINS=["*"] # in production to set up your frontend.
+ALLOWED_ORIGINS=* # in production to set up your frontends.
 ENVIRONMENT=development # or production
 BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
 
@@ -72,6 +72,13 @@ DB_NAME=POSTGRES_DATABASE_NAME
 
 - `development` - the application will run in development mode for local development
 - `production` - the application will run in production mode
+
+**Allowed origins:**
+
+- `*` - allow all origins (Not recommended for production)
+- `http://localhost:3000` - allow only localhost:3000
+- `https://your-frontend.com` - allow only your-frontend.com
+- `https://your-frontend.com,http://localhost:3000` - allow only your-frontend.com and localhost:3000 (comma-separated list)
 
 4. **Activate virtual environment**
 
@@ -125,9 +132,12 @@ make run
 
 1. Client sends `init_data` from Telegram WebApp
 2. Server validates and returns JWT token as httpOnly cookie
-3. `token` - for API requests
+3. All subsequent API requests will automatically include the JWT token cookie
+4. The server verifies the token and provides access to protected resources
 
 **Note:** The `init_data` may be used as a refresh token.
+
+#### ⛔ Excluding Routes from Authentication
 
 If you want to define routes that do not require authentication, add them to the `AUTH_EXCLUDE_PATHS` constant located in:
 
@@ -149,7 +159,19 @@ AUTH_EXCLUDE_PATHS: ClassVar[set[str]] = {
 
 Any route listed here will bypass JWT authentication as well as all of its subpaths (e.g. `/your/public/route`, `/your/public/route/foo`, `/your/public/route/bar/123`, etc.).
 
-Make sure your middleware uses `startswith()` or similar logic to support nested paths.
+#### 👤 Accessing User Data
+
+Once a user is authenticated, you can access their user ID from the request state:
+
+```python
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+@router.get("/your/protected/route")
+def your_protected_route(request: Request) -> JSONResponse:
+    user_id = request.state.user_id  # int (if protected route)
+    return JSONResponse(content={"user_id": user_id})
+```
 
 ## 📁 Project Structure
 
@@ -159,6 +181,7 @@ src/
 ├── backend/
 │   ├── domain/              # Domain layer
 │   │   ├── entities/        # Entities
+│   │   ├── constants/       # Domain constants
 │   │   ├── exceptions/      # Exceptions
 │   │   ├── repositories/    # Repositories interface
 │   │   └── value_objects/   # Value objects
@@ -173,7 +196,7 @@ src/
 │   │   ├── repositories/    # Repositories implementation
 │   │   └── services/        # Services implementation
 │   ├── containers/          # Dependency Injection containers
-│   └── shared/              # Shared resources (config, logger, slowapi, etc.)
+│   └── shared/              # Shared resources (config, slowapi, jwt, etc.)
 └── alembic.ini              # Alembic configuration
 ```
 

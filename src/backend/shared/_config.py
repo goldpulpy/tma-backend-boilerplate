@@ -26,7 +26,7 @@ class APPConfig(BaseConfig):
     host: str = "0.0.0.0"  # noqa: S104
     port: int = Field(default=5000, ge=1, le=65535)
     bot_token: str
-    allowed_origins: list[str]
+    allowed_origins: str
     environment: Environment = Environment.DEVELOPMENT
 
     @property
@@ -38,6 +38,15 @@ class APPConfig(BaseConfig):
     def is_development(self) -> bool:
         """Check if the environment is development."""
         return self.environment == Environment.DEVELOPMENT
+
+    @property
+    def allowed_origins_list(self) -> list[str]:
+        """Allowed origins list."""
+        return [
+            origin.strip()
+            for origin in self.allowed_origins.split(",")
+            if origin.strip()
+        ]
 
 
 class JWTConfig(BaseConfig):

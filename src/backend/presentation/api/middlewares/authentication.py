@@ -58,7 +58,7 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
                 )
                 return self._unauthorized()
 
-            request.state.user_id = user_id  # type: ignore[attr-defined]
+            request.state.user_id = int(user_id)
 
             logger.debug("User authenticated for path: %s", path)
 

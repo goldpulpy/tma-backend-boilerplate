@@ -10,7 +10,7 @@ from slowapi.errors import RateLimitExceeded
 from backend.containers import Container
 from backend.containers.services import ServiceContainer
 from backend.presentation import api
-from backend.presentation.api import docs, health, middlewares
+from backend.presentation.api import docs, health, middlewares, state
 from backend.shared import config
 from backend.shared.slowapi import rate_limit_handler
 
@@ -32,14 +32,14 @@ app = FastAPI(
     openapi_url=None if config.app.is_production else "/openapi.json",
 )
 
-app.state.limiter = ServiceContainer.limiter()  # type: ignore[attr-defined]
+app.state = state.AppState()
+app.state.limiter = ServiceContainer.limiter()
+
 app.add_exception_handler(RateLimitExceeded, rate_limit_handler)
-
 app.add_middleware(middlewares.AuthenticationMiddleware)
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=config.app.allowed_origins,
+    allow_origins=config.app.allowed_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
