@@ -1,8 +1,7 @@
 """Web App init data validation."""
 
 import logging
-import time
-from datetime import UTC, datetime
+from datetime import datetime
 
 from aiogram.utils.web_app import (
     WebAppInitData,
@@ -28,7 +27,7 @@ def validate_init_data(init_data: str) -> WebAppInitData:
                 id=1,
                 first_name="developer",
             ),
-            auth_date=datetime.fromtimestamp(time.time(), UTC),
+            auth_date=datetime.now().astimezone(),
             hash="developer",
         )
 

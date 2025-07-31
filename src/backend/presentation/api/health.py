@@ -1,6 +1,6 @@
 """Health check endpoint."""
 
-import time
+from datetime import datetime
 from typing import Annotated
 
 from dependency_injector.wiring import Provide, inject
@@ -42,5 +42,5 @@ async def health_check(
 
     return HealthCheckResponse(
         status="ok",
-        timestamp=int(time.time()),
+        timestamp=int(datetime.now().astimezone().timestamp()),
     )
