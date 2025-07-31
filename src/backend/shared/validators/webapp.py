@@ -49,6 +49,7 @@ def validate_user_presence(web_app_init_data: WebAppInitData) -> WebAppUser:
     """Validate that user is present in init_data."""
     if not web_app_init_data.user:
         msg = "User is not found in init_data"
+        logger.error(msg)
         raise WebAppInitDataValidationError(msg) from None
 
     return web_app_init_data.user

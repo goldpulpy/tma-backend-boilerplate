@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
 from sqlalchemy import delete
@@ -16,6 +17,8 @@ if TYPE_CHECKING:
 
     from backend.domain.entities.user import User
     from backend.domain.value_objects.user import UserId
+
+logger = logging.getLogger(__name__)
 
 
 class UserRepository(IUserRepository):
@@ -34,11 +37,20 @@ class UserRepository(IUserRepository):
         """Save a user."""
         user_model = UserAdapter.to_model(user)
 
-        self._session.add(user_model)
-        await self._session.flush()
+        existing_user = await self.find_by_id(user.id)
 
-        await self._session.refresh(user_model)
-        return UserAdapter.to_entity(user_model)
+        if existing_user:
+            persistent_model = await self._session.merge(user_model)
+            logger.debug("User ID=%s already exists, updating", user.id)
+        else:
+            self._session.add(user_model)
+            persistent_model = user_model
+            logger.debug("User ID=%s not found, creating", user.id)
+
+        await self._session.flush()
+        await self._session.refresh(persistent_model)
+
+        return UserAdapter.to_entity(persistent_model)
 
     async def delete(self, user_id: UserId) -> None:
         """Delete a user."""
@@ -47,5 +59,7 @@ class UserRepository(IUserRepository):
 
         if result.rowcount == 0:
             raise UserNotFoundError(user_id)
+
+        logger.debug("User ID=%s deleted", user_id)
 
         await self._session.flush()

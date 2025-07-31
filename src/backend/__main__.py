@@ -7,7 +7,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi.errors import RateLimitExceeded
 
-from backend.containers import Container
+from backend.containers import Containers
+from backend.containers.services import ServiceContainer
 from backend.presentation import api
 from backend.presentation.api import docs, health
 from backend.shared import config
@@ -19,10 +20,10 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
-
-container = Container()
-container.wire(packages=[api])
-
+# Wire all containers
+container = Containers()
+container.user_use_case().wire(packages=[api])
+container.service_use_case().wire(packages=[api])
 
 app = FastAPI(
     docs_url=None,
@@ -30,7 +31,7 @@ app = FastAPI(
     openapi_url=None if config.app.is_production else "/openapi.json",
 )
 
-app.state.limiter = Container.service.limiter()  # type: ignore[attr-defined]
+app.state.limiter = ServiceContainer.limiter()  # type: ignore[attr-defined]
 app.add_exception_handler(RateLimitExceeded, rate_limit_handler)
 
 

@@ -2,7 +2,10 @@
 
 from dependency_injector import containers, providers
 
-from backend.application.use_cases.user.ensure import EnsureUserUseCase
+from backend.application.use_cases.user.ensure import (
+    EnsureUserUseCase,
+    IEnsureUserUseCase,
+)
 from backend.containers.services import ServiceContainer
 
 
@@ -12,8 +15,7 @@ class UserUseCaseContainer(containers.DeclarativeContainer):
     service: providers.Container[ServiceContainer] = providers.Container(
         ServiceContainer,
     )
-
-    ensure = providers.Factory(
+    ensure: providers.Factory[IEnsureUserUseCase] = providers.Factory(
         EnsureUserUseCase,
         uow_factory=service.uow.provider,
     )

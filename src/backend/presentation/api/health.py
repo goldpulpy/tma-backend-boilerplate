@@ -7,11 +7,12 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from backend.application.use_cases.health import IHealthCheckUseCase
-from backend.containers import Container
+from backend.containers.services import ServiceContainer
+from backend.containers.use_cases import ServiceUseCaseContainer
 from backend.presentation.api.models.health import HealthCheckResponse
 
 router = APIRouter(tags=["Health"])
-limiter = Container.service.limiter()
+limiter = ServiceContainer.limiter()
 
 
 @router.get(
@@ -27,7 +28,7 @@ async def health_check(
     request: Request,  # noqa: ARG001
     use_case: Annotated[
         IHealthCheckUseCase,
-        Depends(Provide[Container.use_case.health_check]),
+        Depends(Provide[ServiceUseCaseContainer.health_check]),
     ],
 ) -> HealthCheckResponse:
     """Health check endpoint."""

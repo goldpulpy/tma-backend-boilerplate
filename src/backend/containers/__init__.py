@@ -1,5 +1,5 @@
 """DI containers."""
 
-from .container import Container
+from .container import Containers
 
-__all__ = ["Container"]
+__all__ = ["Containers"]

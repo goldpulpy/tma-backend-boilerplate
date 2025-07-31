@@ -7,7 +7,8 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from backend.application.use_cases.user.ensure import IEnsureUserUseCase
-from backend.containers import Container
+from backend.containers.services import ServiceContainer
+from backend.containers.user.use_cases import UserUseCaseContainer
 from backend.domain.entities.user import User
 from backend.domain.value_objects.user import (
     FirstName,
@@ -29,7 +30,7 @@ from backend.shared.validators.webapp import (
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
-limiter = Container.service.limiter()
+limiter = ServiceContainer.limiter()
 
 
 @router.post(
@@ -47,10 +48,7 @@ async def telegram_auth(
     ensure_user_use_case: Annotated[
         IEnsureUserUseCase,
         Depends(
-            Annotated[
-                IEnsureUserUseCase,
-                Provide[Container.use_case.user.ensure],
-            ],
+            Provide[UserUseCaseContainer.ensure],
         ),
     ],
 ) -> TelegramAuthResponse:

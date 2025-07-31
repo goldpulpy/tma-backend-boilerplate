@@ -2,24 +2,21 @@
 
 from dependency_injector import containers, providers
 
-from backend.containers.database import DatabaseContainer
-from backend.containers.services import ServiceContainer
-from backend.containers.use_cases import UseCaseContainer
+from backend.containers.use_cases import ServiceUseCaseContainer
+from backend.containers.user.use_cases import UserUseCaseContainer
 
 
-class Container(containers.DeclarativeContainer):
+class Containers(containers.DeclarativeContainer):
     """Main DI container."""
 
-    db: providers.Container[DatabaseContainer] = providers.Container(
-        DatabaseContainer,
+    service_use_case: providers.Container[ServiceUseCaseContainer] = (
+        providers.Container(
+            ServiceUseCaseContainer,
+        )
     )
 
-    service: providers.Container[ServiceContainer] = providers.Container(
-        ServiceContainer,
-        db=db,
-    )
-
-    use_case: providers.Container[UseCaseContainer] = providers.Container(
-        UseCaseContainer,
-        service=service,
+    user_use_case: providers.Container[UserUseCaseContainer] = (
+        providers.Container(
+            UserUseCaseContainer,
+        )
     )
