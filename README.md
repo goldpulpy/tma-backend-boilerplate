@@ -17,6 +17,7 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - **DDD approach** - 🏗️ Project structure based on Domain-Driven Design
 - **Scalar** - 📚 API reference generator
 - **SlowAPI** - 🛡️ Rate limiting for API endpoints
+- **JWT** - 🔒 JSON Web Token for authentication
 
 ## 📋 Prerequisites
 
@@ -47,21 +48,37 @@ Create or copy `.env.example` to `.env` file in the project root:
 
 ```bash
 # APP Env
+HOST=0.0.0.0 # Optional, default is 0.0.0.0
+PORT=5000 # Optional, default is 5000
+ALLOWED_ORIGINS=* # in production to set up your frontends.
 ENVIRONMENT=development # or production
 BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
-ALLOWED_ORIGINS=["*"] # in production to set up your frontend.
 
 # JWT Env
 JWT_ALGORITHM=HS256
+JWT_ISSUER=YOUR_ISSUER_VALUE # Optional, default is "backend"
+JWT_EXPIRY_DAYS=1 # Optional, default is 1
 JWT_SECRET=YOUR_JWT_SECRET # min 32 characters
 
 # Postgres Env
 DB_HOST=POSTGRES_HOST
-DB_PORT=5432 # default
+DB_PORT=5432 # Optional, default is 5432
 DB_USER=POSTGRES_USER
 DB_PASSWORD=POSTGRES_PASSWORD
 DB_NAME=POSTGRES_DATABASE_NAME
 ```
+
+**Environment mode:**
+
+- `development` - the application will run in development mode for local development
+- `production` - the application will run in production mode
+
+**Allowed origins:**
+
+- `*` - allow all origins (Not recommended for production)
+- `http://localhost:3000` - allow only localhost:3000
+- `https://your-frontend.com` - allow only your-frontend.com
+- `https://your-frontend.com,http://localhost:3000` - allow only your-frontend.com and localhost:3000 (comma-separated list)
 
 4. **Activate virtual environment**
 
@@ -100,6 +117,89 @@ make run
 | `make format`                       | ✨ Format code with ruff                            |
 | `make pre-commit`                   | 🔄 Run pre-commit checks (format, lint, type-check) |
 
+## 📄 Base points
+
+### 🔄 Service endpoints
+
+- GET `/health` - health check endpoint
+- GET `/docs` - API reference documentation (only in development mode)
+
+### 🔒 Authentication
+
+- POST `/api/v1/auth/telegram` - authenticate via Telegram Mini App init_data
+
+**Authentication Flow:**
+
+1. Client sends `init_data` from Telegram WebApp
+2. Server validates and returns JWT token as httpOnly cookie
+3. All subsequent API requests will automatically include the JWT token cookie
+4. The server verifies the token and provides access to protected resources
+
+**Note:** The `init_data` may be used as a refresh token.
+
+#### ⛔ Excluding Routes from Authentication
+
+If you want to define routes that do not require authentication, add them to the `AUTH_EXCLUDE_PATHS` constant located in:
+
+```bash
+src/backend/presentation/api/middlewares/authentication.py
+```
+
+**Example:**
+
+```python
+AUTH_EXCLUDE_PATHS: ClassVar[set[str]] = {
+    "/api/v1/auth/telegram",
+    "/health",
+    "/docs",
+    "/openapi.json",
+    "/your/public/route",  # ← Add your route here
+}
+```
+
+Any route listed here will bypass JWT authentication as well as all of its subpaths (e.g. `/your/public/route`, `/your/public/route/foo`, `/your/public/route/bar/123`, etc.).
+
+#### 👤 Accessing User Data
+
+Once a user is authenticated, you can access their user ID from the request state:
+
+```python
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+@router.get("/your/protected/route")
+def your_protected_route(request: Request) -> JSONResponse:
+    user_id = request.state.user_id  # int (if protected route)
+    return JSONResponse(content={"user_id": user_id})
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── alembic/                 # Database migrations
+├── backend/
+│   ├── domain/              # Domain layer
+│   │   ├── entities/        # Entities
+│   │   ├── constants/       # Domain constants
+│   │   ├── exceptions/      # Exceptions
+│   │   ├── repositories/    # Repositories interface
+│   │   └── value_objects/   # Value objects
+│   ├── application/         # Application layer (API endpoints, routers)
+│   │   ├── dtos/            # Data Transfer Objects
+│   │   ├── services/        # Services interface
+│   │   └── use_cases/       # Use cases
+│   ├── presentation/        # Presentation layer (API endpoints, routers)
+│   │   └── api/             # API endpoints, routers (v1)
+│   ├── infrastructure/      # Infrastructure layer
+│   │   ├── database/        # Database models
+│   │   ├── repositories/    # Repositories implementation
+│   │   └── services/        # Services implementation
+│   ├── containers/          # Dependency Injection containers
+│   └── shared/              # Shared resources (config, slowapi, jwt, etc.)
+└── alembic.ini              # Alembic configuration
+```
+
 ## 🧪 Code Quality Tools
 
 The project uses several tools to ensure code quality:
@@ -135,37 +235,6 @@ pre-commit run --all-files
 ```
 
 **Note:** The `make pre-commit` command runs similar checks but doesn't integrate with git hooks.
-
-## 📄 Base points
-
-- `/health` - health check endpoint
-- `/docs` - API reference documentation (only in development mode)
-
-## 📁 Project Structure
-
-```
-src/
-├── alembic/                 # Database migrations
-├── backend/
-│   ├── domain/              # Domain layer
-│   │   ├── entities/        # Entities
-│   │   ├── exceptions/      # Exceptions
-│   │   ├── repositories/    # Repositories interface
-│   │   └── value_objects/   # Value objects
-│   ├── application/         # Application layer (API endpoints, routers)
-│   │   ├── dtos/            # Data Transfer Objects
-│   │   ├── services/        # Services interface
-│   │   └── use_cases/       # Use cases
-│   ├── presentation/        # Presentation layer (API endpoints, routers)
-│   │   └── api/             # API endpoints, routers (v1)
-│   ├── infrastructure/      # Infrastructure layer
-│   │   ├── database/        # Database models
-│   │   ├── repositories/    # Repositories implementation
-│   │   └── services/        # Services implementation
-│   ├── containers/          # Dependency Injection containers
-│   └── shared/              # Shared resources (config, logger, slowapi, etc.)
-└── alembic.ini              # Alembic configuration
-```
 
 ## 📄 License
 

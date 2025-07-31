@@ -1,11 +1,12 @@
 """Include documentation in the app."""
 
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from scalar_fastapi import get_scalar_api_reference
 
 
-def setup_scalar(app: FastAPI):
-    """Setup documentation for the app.
+def setup_scalar(app: FastAPI) -> None:
+    """Set up documentation for the app.
 
     Args:
         app: FastAPI app
@@ -16,7 +17,7 @@ def setup_scalar(app: FastAPI):
     """
 
     @app.get("/docs", include_in_schema=False)
-    async def api_documentation():
+    async def api_documentation() -> HTMLResponse:
         """Scalar API reference.
 
         Returns:

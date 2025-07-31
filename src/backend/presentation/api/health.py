@@ -1,22 +1,23 @@
 """Health check endpoint."""
 
-import time
+from datetime import datetime
 from typing import Annotated
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.responses import JSONResponse
 
 from backend.application.use_cases.health import IHealthCheckUseCase
-from backend.containers import Container
+from backend.containers.services import ServiceContainer
+from backend.containers.use_cases import ServiceUseCaseContainer
 from backend.presentation.api.models.health import HealthCheckResponse
 
 router = APIRouter(tags=["Health"])
-limiter = Container.service.limiter()
+limiter = ServiceContainer.limiter()
 
 
 @router.get(
     "/health",
-    response_model=HealthCheckResponse,
     status_code=status.HTTP_200_OK,
     summary="Health check endpoint",
     description="Check the health of the service",
@@ -25,12 +26,12 @@ limiter = Container.service.limiter()
 @limiter.limit("1/second")
 @inject
 async def health_check(
-    request: Request,
+    request: Request,  # noqa: ARG001
     use_case: Annotated[
         IHealthCheckUseCase,
-        Depends(Provide[Container.use_case.health_check]),
+        Depends(Provide[ServiceUseCaseContainer.health_check]),
     ],
-):
+) -> JSONResponse:
     """Health check endpoint."""
     health_status = await use_case.execute()
 
@@ -40,7 +41,9 @@ async def health_check(
             detail="Database connection is not healthy",
         )
 
-    return HealthCheckResponse(
-        status="ok",
-        timestamp=int(time.time()),
+    return JSONResponse(
+        content=HealthCheckResponse(
+            status="ok",
+            timestamp=int(datetime.now().astimezone().timestamp()),
+        ).model_dump(),
     )
