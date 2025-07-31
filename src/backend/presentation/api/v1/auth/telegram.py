@@ -1,10 +1,12 @@
 """Telegram authentication endpoints."""
 
 import logging
+from datetime import datetime, timedelta
 from typing import Annotated
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.responses import JSONResponse
 
 from backend.application.use_cases.user.ensure import IEnsureUserUseCase
 from backend.containers.services import ServiceContainer
@@ -22,6 +24,8 @@ from backend.presentation.api.models.auth.telegram import (
     TelegramAuthRequest,
     TelegramAuthResponse,
 )
+from backend.shared import config
+from backend.shared.jwt import create_jwt
 from backend.shared.validators.webapp import (
     WebAppInitDataValidationError,
     validate_init_data,
@@ -51,11 +55,13 @@ async def telegram_auth(
             Provide[UserUseCaseContainer.ensure],
         ),
     ],
-) -> TelegramAuthResponse:
+) -> JSONResponse:
     """Authenticate via Telegram Mini App init_data."""
     try:
         web_app_init_data = validate_init_data(auth_request.init_data)
         web_app_user = validate_user_presence(web_app_init_data)
+
+        logger.debug("Validated web_app_user: %s", web_app_user)
 
         user = User(
             id=UserId(web_app_user.id),
@@ -66,14 +72,47 @@ async def telegram_auth(
             language_code=LanguageCode(web_app_user.language_code),
         )
 
+        logger.debug("Ensuring user %s", user.id.value)
         await ensure_user_use_case.execute(user)
 
-        return TelegramAuthResponse(
-            status="success",
-            message="Telegram authentication successful",
-            created_at=1,
-            expires_at=1,
+        created_at = datetime.now().astimezone()
+        expires_at = created_at + timedelta(days=config.jwt.expiry_days)
+
+        jwt_token = create_jwt(
+            {
+                "sub": str(user.id.value),
+                "exp": int(expires_at.timestamp()),
+                "iat": int(created_at.timestamp()),
+                "nbf": int(created_at.timestamp()),
+                "iss": config.jwt.issuer,
+            },
         )
+
+        logger.debug(
+            "Created JWT token (exp=%s, iat=%s, iss=%s)",
+            int(expires_at.timestamp()),
+            int(created_at.timestamp()),
+            config.jwt.issuer,
+        )
+
+        json_response = JSONResponse(
+            content=TelegramAuthResponse(
+                status="success",
+                message="Telegram authentication successful",
+                created_at=int(created_at.timestamp()),
+                expires_at=int(expires_at.timestamp()),
+            ).model_dump(),
+        )
+
+        json_response.set_cookie(
+            key="access_token",
+            value=jwt_token,
+            httponly=True,
+            samesite="none" if config.app.is_production else "lax",
+            secure=config.app.is_production,
+        )
+
+        logger.debug("Set access_token httpOnly cookie")
 
     except WebAppInitDataValidationError as e:
         raise HTTPException(
@@ -87,3 +126,6 @@ async def telegram_auth(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
         ) from e
+
+    else:
+        return json_response

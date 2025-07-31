@@ -5,6 +5,7 @@ from typing import Annotated
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.responses import JSONResponse
 
 from backend.application.use_cases.health import IHealthCheckUseCase
 from backend.containers.services import ServiceContainer
@@ -30,7 +31,7 @@ async def health_check(
         IHealthCheckUseCase,
         Depends(Provide[ServiceUseCaseContainer.health_check]),
     ],
-) -> HealthCheckResponse:
+) -> JSONResponse:
     """Health check endpoint."""
     health_status = await use_case.execute()
 
@@ -40,7 +41,9 @@ async def health_check(
             detail="Database connection is not healthy",
         )
 
-    return HealthCheckResponse(
-        status="ok",
-        timestamp=int(datetime.now().astimezone().timestamp()),
+    return JSONResponse(
+        content=HealthCheckResponse(
+            status="ok",
+            timestamp=int(datetime.now().astimezone().timestamp()),
+        ).model_dump(),
     )

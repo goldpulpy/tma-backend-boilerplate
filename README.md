@@ -57,6 +57,7 @@ BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
 # JWT Env
 JWT_ALGORITHM=HS256
 JWT_ISSUER=YOUR_ISSUER_VALUE # Optional, default is "backend"
+JWT_EXPIRY_DAYS=7 # Optional, default is 7
 JWT_SECRET=YOUR_JWT_SECRET # min 32 characters
 
 # Postgres Env
@@ -119,14 +120,12 @@ make run
 ### 🔒 Authentication endpoints (v1)
 
 - POST `/api/v1/auth/telegram` - authenticate via Telegram Mini App init_data
-- POST `/api/v1/auth/refresh` - refresh access token using refresh_token
 
 **Authentication Flow:**
 
 1. Client sends `init_data` from Telegram WebApp
-2. Server validates and returns JWT tokens as httpOnly cookies
-3. `access_token` (15min) - for API requests
-4. `refresh_token` (7d) - for token renewal
+2. Server validates and returns JWT token as httpOnly cookie
+3. `access_token` - for API requests
 
 ## 📁 Project Structure
 

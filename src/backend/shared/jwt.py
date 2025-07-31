@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta
 
 from jwt import (
     DecodeError,
@@ -18,17 +17,8 @@ from backend.shared import config
 logger = logging.getLogger(__name__)
 
 
-def create_jwt(sub: str) -> str:
+def create_jwt(payload: dict[str, str | int]) -> str:
     """Create a JWT token."""
-    now = datetime.now().astimezone()
-    payload: dict[str, str | int] = {
-        "sub": sub,
-        "exp": int((now + timedelta(minutes=15)).timestamp()),
-        "iat": int(now.timestamp()),
-        "nbf": int(now.timestamp()),
-        "iss": config.jwt.issuer,
-    }
-
     try:
         return encode(
             payload,
