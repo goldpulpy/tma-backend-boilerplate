@@ -10,7 +10,7 @@ from slowapi.errors import RateLimitExceeded
 from backend.containers import Container
 from backend.containers.services import ServiceContainer
 from backend.presentation import api
-from backend.presentation.api import docs, health
+from backend.presentation.api import docs, health, middlewares
 from backend.shared import config
 from backend.shared.slowapi import rate_limit_handler
 
@@ -35,6 +35,7 @@ app = FastAPI(
 app.state.limiter = ServiceContainer.limiter()  # type: ignore[attr-defined]
 app.add_exception_handler(RateLimitExceeded, rate_limit_handler)
 
+app.add_middleware(middlewares.AuthenticationMiddleware)
 
 app.add_middleware(
     CORSMiddleware,

@@ -20,7 +20,7 @@ from backend.domain.value_objects.user import (
     UserId,
     Username,
 )
-from backend.presentation.api.models.auth.telegram import (
+from backend.presentation.api.models.authentication.telegram import (
     TelegramAuthRequest,
     TelegramAuthResponse,
 )
@@ -105,14 +105,14 @@ async def telegram_auth(
         )
 
         json_response.set_cookie(
-            key="access_token",
+            key="token",
             value=jwt_token,
             httponly=True,
             samesite="none" if config.app.is_production else "lax",
             secure=config.app.is_production,
         )
 
-        logger.debug("Set access_token httpOnly cookie")
+        logger.debug("Set token httpOnly cookie")
 
     except WebAppInitDataValidationError as e:
         raise HTTPException(

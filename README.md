@@ -117,7 +117,7 @@ make run
 - GET `/health` - health check endpoint
 - GET `/docs` - API reference documentation (only in development mode)
 
-### 🔒 Authentication endpoints (v1)
+### 🔒 Authentication
 
 - POST `/api/v1/auth/telegram` - authenticate via Telegram Mini App init_data
 
@@ -125,9 +125,31 @@ make run
 
 1. Client sends `init_data` from Telegram WebApp
 2. Server validates and returns JWT token as httpOnly cookie
-3. `access_token` - for API requests
+3. `token` - for API requests
 
 **Note:** The `init_data` may be used as a refresh token.
+
+If you want to define routes that do not require authentication, add them to the `AUTH_EXCLUDE_PATHS` constant located in:
+
+```bash
+src/backend/presentation/api/middlewares/authentication.py
+```
+
+**Example:**
+
+```python
+AUTH_EXCLUDE_PATHS: ClassVar[set[str]] = {
+    "/api/v1/auth/telegram",
+    "/health",
+    "/docs",
+    "/openapi.json",
+    "/your/public/route",  # ← Add your route here
+}
+```
+
+Any route listed here will bypass JWT authentication as well as all of its subpaths (e.g. `/your/public/route`, `/your/public/route/foo`, `/your/public/route/bar/123`, etc.).
+
+Make sure your middleware uses `startswith()` or similar logic to support nested paths.
 
 ## 📁 Project Structure
 

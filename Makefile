@@ -57,6 +57,7 @@ install: venv
 .PHONY: run
 run:
 	@echo "$(YELLOW)Running application...$(NC)"
+	@export $(cat .env)
 	@PYTHONPATH=src python -m backend
 
 .PHONY: clean
