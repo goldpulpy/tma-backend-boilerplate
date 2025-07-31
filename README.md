@@ -57,7 +57,7 @@ BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
 # JWT Env
 JWT_ALGORITHM=HS256
 JWT_ISSUER=YOUR_ISSUER_VALUE # Optional, default is "backend"
-JWT_EXPIRY_DAYS=7 # Optional, default is 7
+JWT_EXPIRY_DAYS=1 # Optional, default is 1
 JWT_SECRET=YOUR_JWT_SECRET # min 32 characters
 
 # Postgres Env
@@ -126,6 +126,8 @@ make run
 1. Client sends `init_data` from Telegram WebApp
 2. Server validates and returns JWT token as httpOnly cookie
 3. `access_token` - for API requests
+
+**Note:** The `init_data` may be used as a refresh token.
 
 ## 📁 Project Structure
 

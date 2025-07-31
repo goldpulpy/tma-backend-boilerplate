@@ -45,7 +45,7 @@ class JWTConfig(BaseConfig):
 
     secret: str = Field(min_length=32)
     issuer: str = "backend"
-    expiry_days: int = 7
+    expiry_days: int = 1
     algorithm: str = "HS256"
 
     model_config = SettingsConfigDict(
