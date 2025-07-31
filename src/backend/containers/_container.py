@@ -6,7 +6,7 @@ from backend.containers.use_cases import ServiceUseCaseContainer
 from backend.containers.user.use_cases import UserUseCaseContainer
 
 
-class Containers(containers.DeclarativeContainer):
+class Container(containers.DeclarativeContainer):
     """Main DI container."""
 
     service_use_case: providers.Container[ServiceUseCaseContainer] = (

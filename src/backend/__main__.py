@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi.errors import RateLimitExceeded
 
-from backend.containers import Containers
+from backend.containers import Container
 from backend.containers.services import ServiceContainer
 from backend.presentation import api
 from backend.presentation.api import docs, health
@@ -19,9 +19,10 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
+logger = logging.getLogger(__name__)
 
 # Wire all containers
-container = Containers()
+container = Container()
 container.user_use_case().wire(packages=[api])
 container.service_use_case().wire(packages=[api])
 
@@ -51,4 +52,8 @@ if config.app.is_development:
 
 
 if __name__ == "__main__":
+    logger.info(
+        "Starting the application in %s mode",
+        config.app.environment.value,
+    )
     uvicorn.run(app, host=config.app.host, port=config.app.port)

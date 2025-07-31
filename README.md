@@ -48,23 +48,29 @@ Create or copy `.env.example` to `.env` file in the project root:
 
 ```bash
 # APP Env
-HOST=0.0.0.0 # default
-PORT=5000 # default
+HOST=0.0.0.0 # Optional, default is 0.0.0.0
+PORT=5000 # Optional, default is 5000
 ALLOWED_ORIGINS=["*"] # in production to set up your frontend.
 ENVIRONMENT=development # or production
 BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
 
 # JWT Env
 JWT_ALGORITHM=HS256
+JWT_ISSUER=YOUR_ISSUER_VALUE # Optional, default is "backend"
 JWT_SECRET=YOUR_JWT_SECRET # min 32 characters
 
 # Postgres Env
 DB_HOST=POSTGRES_HOST
-DB_PORT=5432 # default
+DB_PORT=5432 # Optional, default is 5432
 DB_USER=POSTGRES_USER
 DB_PASSWORD=POSTGRES_PASSWORD
 DB_NAME=POSTGRES_DATABASE_NAME
 ```
+
+**Environment mode:**
+
+- `development` - the application will run in development mode for local development
+- `production` - the application will run in production mode
 
 4. **Activate virtual environment**
 

@@ -26,6 +26,7 @@ def create_jwt(sub: str) -> str:
         "exp": int((now + timedelta(minutes=15)).timestamp()),
         "iat": int(now.timestamp()),
         "nbf": int(now.timestamp()),
+        "iss": config.jwt.issuer,
     }
 
     try:

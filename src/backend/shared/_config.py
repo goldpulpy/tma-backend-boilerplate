@@ -44,6 +44,7 @@ class JWTConfig(BaseConfig):
     """JWT config class."""
 
     secret: str = Field(min_length=32)
+    issuer: str = "backend"
     algorithm: str = "HS256"
 
     model_config = SettingsConfigDict(
