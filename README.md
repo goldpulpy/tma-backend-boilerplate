@@ -177,7 +177,7 @@ from backend.shared.validators.fastapi import (
 )
 
 @router.get("/your/protected/route")
-def your_protected_route(request: Request) -> JSONResponse:
+async def your_protected_route(request: Request) -> JSONResponse:
     try:
 
         user_id = get_user_id_from_state(request)  # int or raise UserIdNotFoundInStateError
