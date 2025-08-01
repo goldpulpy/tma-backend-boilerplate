@@ -1,5 +1,7 @@
 """Telegram authentication models."""
 
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -14,5 +16,5 @@ class TelegramAuthResponse(BaseModel):
 
     status: str
     message: str
-    created_at: int
-    expires_at: int
+    created_at: datetime
+    expires_at: datetime
