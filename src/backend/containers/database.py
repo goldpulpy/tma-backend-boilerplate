@@ -2,7 +2,6 @@
 
 from dependency_injector import containers, providers
 from sqlalchemy.ext.asyncio import (
-    AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
@@ -14,7 +13,7 @@ from backend.shared import config
 class DatabaseContainer(containers.DeclarativeContainer):
     """Database container."""
 
-    engine: providers.Singleton[AsyncEngine] = providers.Singleton(
+    engine = providers.Singleton(
         create_async_engine,
         config.db.url,
         future=True,
@@ -24,11 +23,9 @@ class DatabaseContainer(containers.DeclarativeContainer):
         pool_recycle=3600,
     )
 
-    session_factory: providers.Singleton[async_sessionmaker[AsyncSession]] = (
-        providers.Singleton(
-            async_sessionmaker,
-            bind=engine,
-            class_=AsyncSession,
-            expire_on_commit=False,
-        )
+    session_factory = providers.Singleton(
+        async_sessionmaker,
+        bind=engine,
+        class_=AsyncSession,
+        expire_on_commit=False,
     )

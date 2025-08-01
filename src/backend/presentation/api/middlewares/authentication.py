@@ -48,7 +48,7 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
             return self._unauthorized()
 
         try:
-            data = jwt.verify_jwt(token)
+            data = jwt.verify_auth_token(token)
 
             user_id = data.get("sub")
             if not user_id or not isinstance(user_id, str):

@@ -5,7 +5,6 @@ from typing import Annotated
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from fastapi.responses import JSONResponse
 
 from backend.application.use_cases.health import IHealthCheckUseCase
 from backend.containers.services import ServiceContainer
@@ -22,6 +21,14 @@ limiter = ServiceContainer.limiter()
     summary="Health check endpoint",
     description="Check the health of the service",
     response_description="Health check response",
+    responses={
+        200: {
+            "description": "Service is healthy",
+            "model": HealthCheckResponse,
+        },
+        429: {"description": "Rate limit exceeded"},
+        503: {"description": "Service unavailable"},
+    },
 )
 @limiter.limit("1/second")
 @inject
@@ -31,7 +38,7 @@ async def health_check(
         IHealthCheckUseCase,
         Depends(Provide[ServiceUseCaseContainer.health_check]),
     ],
-) -> JSONResponse:
+) -> HealthCheckResponse:
     """Health check endpoint."""
     health_status = await use_case.execute()
 
@@ -41,9 +48,7 @@ async def health_check(
             detail="Database connection is not healthy",
         )
 
-    return JSONResponse(
-        content=HealthCheckResponse(
-            status="ok",
-            timestamp=int(datetime.now().astimezone().timestamp()),
-        ).model_dump(),
+    return HealthCheckResponse(
+        status="ok",
+        timestamp=int(datetime.now().astimezone().timestamp()),
     )

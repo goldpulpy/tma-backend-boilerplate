@@ -162,17 +162,41 @@ Any route listed here will bypass JWT authentication as well as all of its subpa
 
 #### 👤 Accessing User Data
 
-Once a user is authenticated, you can access their user ID from the request state:
+Once a user is authenticated, you can access their user ID from the request state.
+
+<details>
+<summary>Example</summary>
 
 ```python
-from fastapi import Request
+from fastapi import Request, HTTPException, status
 from fastapi.responses import JSONResponse
+
+from backend.shared.validators.fastapi import (
+    UserIdNotFoundInStateError,
+    get_user_id_from_state,
+)
 
 @router.get("/your/protected/route")
 def your_protected_route(request: Request) -> JSONResponse:
-    user_id = request.state.user_id  # int (if protected route)
-    return JSONResponse(content={"user_id": user_id})
+    try:
+
+        user_id = get_user_id_from_state(request)  # int or raise UserIdNotFoundInStateError
+        return JSONResponse(content={"user_id": user_id})
+
+    except UserIdNotFoundInStateError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Unauthorized",
+        ) from e
 ```
+
+</details>
+
+also you can see the example in the `src/backend/presentation/api/v1/user/me.py` file.
+
+### 🔄 User endpoints
+
+- GET `/api/v1/user/me` - get current user profile (protected route)
 
 ## 📁 Project Structure
 

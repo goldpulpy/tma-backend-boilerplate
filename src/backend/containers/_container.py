@@ -9,14 +9,6 @@ from backend.containers.user.use_cases import UserUseCaseContainer
 class Container(containers.DeclarativeContainer):
     """Main DI container."""
 
-    service_use_case: providers.Container[ServiceUseCaseContainer] = (
-        providers.Container(
-            ServiceUseCaseContainer,
-        )
-    )
+    service_use_case = providers.Container(ServiceUseCaseContainer)
 
-    user_use_case: providers.Container[UserUseCaseContainer] = (
-        providers.Container(
-            UserUseCaseContainer,
-        )
-    )
+    user_use_case = providers.Container(UserUseCaseContainer)
