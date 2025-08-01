@@ -6,7 +6,7 @@
 
 </div>
 
-A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQLAlchemy, and architectural best practices. ✨
+A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQLAlchemy, and architectural best practices. This template provides a complete foundation with authentication, database integration, DDD architecture, and secure API design patterns to quickly build production-ready Telegram Mini App backends. ✨
 
 ## 🌟 Features
 
@@ -18,6 +18,7 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - **Scalar** - 📚 API reference generator
 - **SlowAPI** - 🛡️ Rate limiting for API endpoints
 - **JWT** - 🔒 JSON Web Token for authentication
+- **Unit of Work** - 🔄 Unit of Work pattern for database transactions
 
 ## 📋 Prerequisites
 
@@ -55,7 +56,7 @@ ENVIRONMENT=development # or production
 BOT_TOKEN=YOUR_BOT_TOKEN # from @BotFather
 
 # JWT Env
-JWT_ALGORITHM=HS256
+JWT_ALGORITHM=HS256 # Optional, default is "HS256"
 JWT_ISSUER=YOUR_ISSUER_VALUE # Optional, default is "backend"
 JWT_EXPIRY_DAYS=1 # Optional, default is 1
 JWT_SECRET=YOUR_JWT_SECRET # min 32 characters
@@ -75,9 +76,9 @@ DB_NAME=POSTGRES_DATABASE_NAME
 
 **Allowed origins:**
 
-- `*` - allow all origins (Not recommended for production)
-- `http://localhost:3000` - allow only localhost:3000
-- `https://your-frontend.com` - allow only your-frontend.com
+- `*` - allow all origins (not recommended for production)
+- `http://localhost:3000` - allow only localhost:3000 (for local development)
+- `https://your-frontend.com` - allow only your-frontend.com (for production)
 - `https://your-frontend.com,http://localhost:3000` - allow only your-frontend.com and localhost:3000 (comma-separated list)
 
 4. **Activate virtual environment**
@@ -181,7 +182,7 @@ src/
 ├── backend/
 │   ├── domain/              # Domain layer
 │   │   ├── entities/        # Entities
-│   │   ├── constants/       # Domain constants
+│   │   ├── constants/       # Constants
 │   │   ├── exceptions/      # Exceptions
 │   │   ├── repositories/    # Repositories interface
 │   │   └── value_objects/   # Value objects
