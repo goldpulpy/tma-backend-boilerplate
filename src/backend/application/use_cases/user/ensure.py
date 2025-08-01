@@ -26,7 +26,15 @@ class EnsureUserUseCase(IEnsureUserUseCase):
         self._uow_factory = uow_factory
 
     async def execute(self, user: User) -> User:
-        """Ensure user."""
+        """Ensure user.
+
+        Args:
+            user: User entity
+
+        Returns:
+            User: User entity
+
+        """
         async with self._uow_factory() as uow:
             await uow.users.save(user)
 

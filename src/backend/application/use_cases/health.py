@@ -29,7 +29,12 @@ class HealthCheckUseCase(IHealthCheckUseCase):
         self.db_health_check = database_health_check_service
 
     async def execute(self) -> HealthServiceStatus:
-        """Execute the health check."""
+        """Execute the health check.
+
+        Returns:
+            HealthServiceStatus: Health service status
+
+        """
         logger.debug("Executing health check...")
 
         # Health check
