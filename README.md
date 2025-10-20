@@ -1,12 +1,36 @@
 <div align="center">
   <h1>TMA Backend Boilerplate 🚀</h1>
 
+![Telegram](https://img.shields.io/badge/Telegram-backend-blue?logo=telegram)
+
 ![Python](https://img.shields.io/badge/python-3.12+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0+-red.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-black.svg)
+![Type checked: pyright](https://img.shields.io/badge/type%20checked-pyright-blue.svg)
+
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-316192.svg?logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-ready-DC382D.svg?logo=redis&logoColor=white)
+
+![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF.svg?logo=github-actions&logoColor=white)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 
 </div>
 
-A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQLAlchemy, and architectural best practices. This template provides a complete foundation with authentication, database integration, DDD architecture, and secure API design patterns to quickly build production-ready Telegram Mini App backends. ✨
+A modern, production-ready boilerplate for building Telegram Mini Apps backends with FastAPI. Features clean architecture, comprehensive authentication, and enterprise-grade patterns out of the box.
+
+**What you get:**
+
+- 🔐 **Secure by default** - JWT authentication, Telegram WebApp validation, rate limiting
+- 🏗️ **Clean architecture** - DDD principles, dependency injection, unit of work pattern
+- 🚀 **Developer-friendly** - Hot reload, type safety, automated migrations, pre-commit hooks
+- 📦 **Production-ready** - Docker support, CI/CD with GitHub Actions, health checks
+- 📚 **Well-documented** - Interactive API docs with Scalar, comprehensive README
+
+Built with FastAPI, SQLAlchemy, and modern Python tooling to help you ship faster.
 
 ## 🌟 Features
 
@@ -20,6 +44,9 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - **JWT** - 🔒 JSON Web Token for authentication
 - **Unit of Work** - 🔄 Unit of Work pattern for database transactions
 - **Docker** - 🐳 Containerization for easy deployment
+- **GitHub Actions** - 🚀 Continuous integration and deployment
+- **Pre-commit** - 🔄 Automated code formatting and linting
+- **uv** - 🐍 Python virtual environment manager
 
 ## 📋 Prerequisites
 
@@ -27,21 +54,23 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - 🐳 Docker
 - ⚙️ Make (used for convenient command execution during development)
 
-## 🚀 Quick Start
+## 🐳 Local Development Environment
 
-## 🐳 PostgreSQL (Docker)
-
-This project includes a lightweight **docker-compose setup** for running PostgreSQL locally during development.
+This project includes a lightweight **docker-compose setup** for running PostgreSQL and Redis locally during development.
 
 ### 📁 Folder structure
 
 ```
 docker/
-└── postgres/
-    └── docker-compose.yml
+├── postgres
+└── redis
 ```
 
-### ▶️ Run PostgreSQL container
+### 🐘 PostgreSQL
+
+<details>
+
+#### ▶️ Run PostgreSQL container
 
 From the project root, execute:
 
@@ -50,40 +79,92 @@ docker compose -f docker/postgres/docker-compose.yml up -d
 ```
 
 This will start a PostgreSQL container with the configured environment.
-By default:
+
+**Default configuration:**
 
 - Port: `5432`
 - User: `root`
 - Password: `toor`
 - Database: `db`
 
-#### 🔎 Adminer UI
-
 You can access the Adminer UI at [http://localhost:8080](http://localhost:8080)
 
 Select the `PostgreSQL` database and log in with the provided credentials.
 
-### 🔧 Custom PostgreSQL Configuration
+#### 🔧 Custom PostgreSQL Configuration
 
 To use different credentials, modify `docker/postgres/docker-compose.yml`:
 
-- Update POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
-- Update corresponding values in .env file
+- Update `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`
+- Update corresponding values in `.env` file
 - Restart container: `docker compose -f docker/postgres/docker-compose.yml restart`
 
-### 🧹 Stop and remove container
+#### 🧹 Stop and remove PostgreSQL container
 
 ```bash
 docker compose -f docker/postgres/docker-compose.yml down
-```
 
-with volumes:
+# or if you want to remove data
 
-```bash
 docker compose -f docker/postgres/docker-compose.yml down --volumes
 ```
 
-### 💻 Local Development
+</details>
+
+### 🔴 Redis (if needed)
+
+<details>
+
+#### ▶️ Run Redis container
+
+From the project root, execute:
+
+```bash
+docker compose -f docker/redis/docker-compose.yml up -d
+```
+
+This will start a Redis container with the configured environment.
+
+**Default configuration:**
+
+- Port: `6379`
+- User: `default`
+- Password: `toor`
+
+#### 🔧 Custom Redis Configuration
+
+To use different settings, modify `docker/redis/docker-compose.yml`:
+
+- Update `REDIS_PASSWORD` if authentication is needed or remove the line
+- Update port mapping if necessary
+- Update corresponding values in `.env` file
+- Restart container: `docker compose -f docker/redis/docker-compose.yml restart`
+
+#### 🧪 Test Redis connection
+
+You can test the connection using redis-cli:
+
+```bash
+docker exec -it redis redis-cli
+AUTH toor # or your password
+PING
+```
+
+Expected response: `PONG`
+
+#### 🧹 Stop and remove Redis container
+
+```bash
+docker compose -f docker/redis/docker-compose.yml down
+
+# or if you want to remove data
+
+docker compose -f docker/redis/docker-compose.yml down --volumes
+```
+
+</details>
+
+## 💻 Local Development
 
 1. **Clone the repository**
 
@@ -92,7 +173,7 @@ git clone https://github.com/goldpulpy/tma-backend-boilerplate.git
 cd tma-backend-boilerplate
 ```
 
-2. **Setup environment**
+2. **Create a virtual environment and install dependencies**
 
 ```bash
 make install
@@ -148,7 +229,13 @@ make migrate
 make run
 ```
 
-#### 📝 Notes for local development
+6. **Check health status**
+
+```bash
+curl -X GET http://localhost:5000/health
+```
+
+### 📝 Notes for local development
 
 - Activate the virtual environment:
 
@@ -162,13 +249,22 @@ source .venv/bin/activate
 export $(grep -v '^#' .env | xargs)
 ```
 
+- Install package with `uv` (recommended):
+
+```bash
+uv add package_name
+make requirements # for export to requirements.txt
+```
+
+> **Note:** `make requirements` is necessary for docker build and also for local development. This command updates the `requirements.txt` file with the latest dependencies.
+
 ## 🛠️ Makefile Commands
 
 | Command                             | Description                                         |
 | ----------------------------------- | --------------------------------------------------- |
-| `make venv`                         | 🔧 Create virtual environment                       |
-| `make install`                      | 📦 Install dependencies                             |
-| `make clean`                        | 🧹 Clean the development environment                |
+| `make install`                      | 📦 Create venv and install dependencies             |
+| `make requirements`                 | 📝 Export dependencies to requirements.txt          |
+| `make clean`                        | 🧹 Clean                                            |
 | `make run`                          | 🚀 Run the application                              |
 | `make create-migration m='Message'` | ➕ Create a new migration                           |
 | `make migrate`                      | 🔄 Apply all pending migrations                     |
@@ -226,6 +322,7 @@ Any route listed here will bypass JWT authentication as well as all of its subpa
 Once a user is authenticated, you can access their user ID from the request state.
 
 <details>
+
 <summary>Example</summary>
 
 ```python
@@ -324,6 +421,8 @@ pre-commit run --all-files
 
 ## 🔒 Production Best Practices
 
+<details>
+
 ### Security
 
 - Use strong JWT_SECRET (min 32 random characters)
@@ -345,6 +444,42 @@ pre-commit run --all-files
 - Use read replicas for scaling (if needed)
 - Monitor database performance
 - Set appropriate connection limits
+
+</details>
+
+## 🐛 Troubleshooting
+
+<details>
+
+<summary>Common Issues</summary>
+
+**Problem:** `Port already in use`
+
+```bash
+# Kill process on port 5000
+lsof -ti:5000 | xargs kill -9
+```
+
+**Problem:** `Migration conflicts`
+
+```bash
+make db-reset
+make migrate
+```
+
+**Problem:** `Command not found: make`
+
+```bash
+# macOS: Install via Homebrew
+brew install make
+```
+
+```bash
+# Linux (Ubuntu/Debian)
+sudo apt-get install build-essential
+```
+
+</details>
 
 ## 📄 License
 
