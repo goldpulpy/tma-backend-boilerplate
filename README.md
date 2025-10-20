@@ -95,16 +95,10 @@ cd tma-backend-boilerplate
 2. **Setup environment**
 
 ```bash
-make venv
-```
-
-3. **Install dependencies**
-
-```bash
 make install
 ```
 
-4. **Configure environment variables**
+3. **Configure environment variables**
 
 Create or copy `.env.example` to `.env` file in the project root:
 
@@ -142,13 +136,13 @@ POSTGRES_DB=POSTGRES_DATABASE_NAME
 - `https://your-frontend.com` - allow only your-frontend.com (for production)
 - `https://your-frontend.com,http://localhost:3000` - allow only your-frontend.com and localhost:3000 (comma-separated list)
 
-5. **Run migrations**
+4. **Run migrations**
 
 ```bash
 make migrate
 ```
 
-6. **Start the application**
+5. **Start the application**
 
 ```bash
 make run
