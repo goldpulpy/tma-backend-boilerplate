@@ -19,14 +19,69 @@ A modern boilerplate for developing Telegram Mini Apps backend using FastAPI, SQ
 - **SlowAPI** - 🛡️ Rate limiting for API endpoints
 - **JWT** - 🔒 JSON Web Token for authentication
 - **Unit of Work** - 🔄 Unit of Work pattern for database transactions
+- **Docker** - 🐳 Containerization for easy deployment
 
 ## 📋 Prerequisites
 
-- 🐍 Python 3.12+
-- 🐘 PostgreSQL
+- 🐍 Python 3.12+ (venv)
+- 🐳 Docker
 - ⚙️ Make (used for convenient command execution during development)
 
 ## 🚀 Quick Start
+
+## 🐳 PostgreSQL (Docker)
+
+This project includes a lightweight **docker-compose setup** for running PostgreSQL locally during development.
+
+### 📁 Folder structure
+
+```
+docker/
+└── postgres/
+    └── docker-compose.yml
+```
+
+### ▶️ Run PostgreSQL container
+
+From the project root, execute:
+
+```bash
+docker compose -f docker/postgres/docker-compose.yml up -d
+```
+
+This will start a PostgreSQL container with the configured environment.
+By default:
+
+- Port: `5432`
+- User: `root`
+- Password: `toor`
+- Database: `db`
+
+#### 🔎 Adminer UI
+
+You can access the Adminer UI at [http://localhost:8080](http://localhost:8080)
+
+Select the `PostgreSQL` database and log in with the provided credentials.
+
+### 🔧 Custom PostgreSQL Configuration
+
+To use different credentials, modify `docker/postgres/docker-compose.yml`:
+
+- Update POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
+- Update corresponding values in .env file
+- Restart container: `docker compose -f docker/postgres/docker-compose.yml restart`
+
+### 🧹 Stop and remove container
+
+```bash
+docker compose -f docker/postgres/docker-compose.yml down
+```
+
+with volumes:
+
+```bash
+docker compose -f docker/postgres/docker-compose.yml down --volumes
+```
 
 ### 💻 Local Development
 
@@ -40,10 +95,16 @@ cd tma-backend-boilerplate
 2. **Setup environment**
 
 ```bash
+make venv
+```
+
+3. **Install dependencies**
+
+```bash
 make install
 ```
 
-3. **Configure environment variables**
+4. **Configure environment variables**
 
 Create or copy `.env.example` to `.env` file in the project root:
 
@@ -62,11 +123,11 @@ JWT_EXPIRY_DAYS=1 # Optional, default is 1
 JWT_SECRET=YOUR_JWT_SECRET # min 32 characters
 
 # Postgres Env
-DB_HOST=POSTGRES_HOST
-DB_PORT=5432 # Optional, default is 5432
-DB_USER=POSTGRES_USER
-DB_PASSWORD=POSTGRES_PASSWORD
-DB_NAME=POSTGRES_DATABASE_NAME
+POSTGRES_HOST=POSTGRES_HOST
+POSTGRES_PORT=5432 # Optional, default is 5432
+POSTGRES_USER=POSTGRES_USER
+POSTGRES_PASSWORD=POSTGRES_PASSWORD
+POSTGRES_DB=POSTGRES_DATABASE_NAME
 ```
 
 **Environment mode:**
@@ -81,14 +142,6 @@ DB_NAME=POSTGRES_DATABASE_NAME
 - `https://your-frontend.com` - allow only your-frontend.com (for production)
 - `https://your-frontend.com,http://localhost:3000` - allow only your-frontend.com and localhost:3000 (comma-separated list)
 
-4. **Activate virtual environment**
-
-**Note:** You need to have the virtual environment activated.
-
-```bash
-source .venv/bin/activate
-```
-
 5. **Run migrations**
 
 ```bash
@@ -99,6 +152,20 @@ make migrate
 
 ```bash
 make run
+```
+
+#### 📝 Notes for local development
+
+- Activate the virtual environment:
+
+```bash
+source .venv/bin/activate
+```
+
+- Load environment variables from the .env file:
+
+```bash
+export $(grep -v '^#' .env | xargs)
 ```
 
 ## 🛠️ Makefile Commands
@@ -260,6 +327,30 @@ pre-commit run --all-files
 ```
 
 **Note:** The `make pre-commit` command runs similar checks but doesn't integrate with git hooks.
+
+## 🔒 Production Best Practices
+
+### Security
+
+- Use strong JWT_SECRET (min 32 random characters)
+- Set specific ALLOWED_ORIGINS (never use `*` in production)
+- Enable HTTPS with valid SSL certificate
+- Use environment variables for all secrets
+- Never commit `.env` files to git
+- Use non-root user in Docker containers
+- Keep dependencies updated regularly
+- Implement rate limiting (SlowAPI is already configured)
+- Set up proper CORS policies
+- Enable security headers in Nginx
+
+### Database
+
+- Use connection pooling
+- Set up automated backups
+- Enable database SSL connections
+- Use read replicas for scaling (if needed)
+- Monitor database performance
+- Set appropriate connection limits
 
 ## 📄 License
 
