@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:8-alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-toor}
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-toor}"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-toor}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  redis_data:
+    name: redis_data
