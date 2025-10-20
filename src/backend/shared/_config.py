@@ -71,10 +71,10 @@ class DBConfig(BaseConfig):
     port: int = Field(default=5432, ge=1, le=65535)
     user: str
     password: str
-    name: str
+    db: str
 
     model_config = SettingsConfigDict(
-        env_prefix="DB_",
+        env_prefix="POSTGRES_",
         extra="ignore",
         frozen=True,
     )
@@ -84,7 +84,7 @@ class DBConfig(BaseConfig):
         """DB URL."""
         return (
             f"postgresql+asyncpg://{self.user}:{self.password}"
-            f"@{self.host}:{self.port}/{self.name}"
+            f"@{self.host}:{self.port}/{self.db}"
         )
 
 
