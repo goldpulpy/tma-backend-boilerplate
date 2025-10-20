@@ -1,22 +1,44 @@
 repos:
-  - repo: local
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.1
     hooks:
       - id: ruff-format
         name: ruff format
-        entry: bash -c 'source .venv/bin/activate && ruff format --line-length 79 src/'
-        language: system
-        types: [python]
+        files: ^src/
 
       - id: ruff
-        name: ruff
-        entry: bash -c 'source .venv/bin/activate && ruff check src/ --select=E,F,I,B,UP,N,SIM,PERF --fix --line-length 79'
-        language: system
-        types: [python]
+        name: ruff check
+        files: ^src/
 
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.406
+    hooks:
       - id: pyright
-        name: pyright
-        entry: bash -c 'source .venv/bin/activate && pyright src/'
-        language: system
-        types: [python]
+        name: pyright type-check
+        files: ^src/
         pass_filenames: false
         always_run: true
+        additional_dependencies:
+          [
+            "aiogram==3.21.0",
+            "alembic==1.16.4",
+            "asyncpg==0.30.0",
+            "dependency-injector==4.48.1",
+            "fastapi==0.116.1",
+            "psycopg2-binary==2.9.10",
+            "pydantic-settings==2.10.1",
+            "pyjwt==2.10.1",
+            "scalar-fastapi==1.2.2",
+            "slowapi==0.1.9",
+            "sqlalchemy==2.0.41",
+            "uvicorn==0.35.0",
+          ]
