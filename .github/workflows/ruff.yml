@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -23,4 +26,4 @@ jobs:
           pip install ruff
       - name: Analysing the code with ruff
         run: |
-          ruff check src/ --line-length 79 --select=E,F,I,B,UP,SIM,PERF
+          ruff check src/ --line-length 79 --select=ALL --ignore=INP001
