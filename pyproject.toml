@@ -1,0 +1,53 @@
+[project]
+name = "tma-backend-boilerplate"
+version = "0.1.0"
+description = "Telegram Mini Apps backend boilerplate"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiogram==3.21.0",
+    "alembic==1.16.4",
+    "asyncpg==0.30.0",
+    "dependency-injector==4.48.1",
+    "fastapi==0.116.1",
+    "psycopg2-binary==2.9.10",
+    "pydantic-settings==2.10.1",
+    "pyjwt==2.10.1",
+    "scalar-fastapi==1.2.2",
+    "slowapi==0.1.9",
+    "sqlalchemy==2.0.41",
+    "uvicorn==0.35.0",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pyright>=1.1.406",
+    "ruff>=0.14.1",
+]
+
+[tool.ruff]
+src = ["src"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+]
+line-length = 79
+fix = true
+unsafe-fixes = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["INP001"]
+
+[tool.pyright]
+include = ["src"]
+exclude = [
+    "**/__pycache__",
+    ".venv",
+]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+reportMissingTypeStubs = false

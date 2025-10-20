@@ -3,6 +3,8 @@ SOURCE_DIR := src
 VENV := .venv
 PYTHON := $(VENV)/bin/python
 PIP := $(VENV)/bin/pip
+UV := $(VENV)/bin/uv
+ENV_FILE := .env
 
 # Colors for pretty output
 GREEN := \033[0;32m
@@ -44,20 +46,20 @@ help:
 venv:
 	@echo "$(YELLOW)Creating virtual environment...$(NC)"
 	@python3 -m venv $(VENV)
+	@$(PIP) install --upgrade pip
+	@$(PIP) install uv
 	@echo "$(GREEN)Virtual environment created successfully!$(NC)"
 
 .PHONY: install
 install: venv
 	@echo "$(YELLOW)Installing dependencies...$(NC)"
-	@$(PIP) install --upgrade pip
-	@$(PIP) install -r requirements.txt
-	@$(PIP) install -r requirements-dev.txt
+	@$(UV) sync
 	@echo "$(GREEN)Dependencies installed successfully!$(NC)"
 
 .PHONY: run
 run:
 	@echo "$(YELLOW)Running application...$(NC)"
-	@env $$(cat .env | xargs) PYTHONPATH=src python -m backend
+	@PYTHONPATH=src $(UV) run --env-file $(ENV_FILE) python -m backend
 
 .PHONY: clean
 clean:
@@ -76,56 +78,56 @@ create-migration:
 		exit 1; \
 	fi
 	@echo "$(YELLOW)Creating migration: $(m)$(NC)"
-	@cd $(SOURCE_DIR) && alembic revision --autogenerate -m "$(m)"
+	@PYTHONPATH=$(SOURCE_DIR) $(UV) run --env-file $(ENV_FILE) alembic -c $(SOURCE_DIR)/alembic.ini revision --autogenerate -m "$(m)"
 	@echo "$(GREEN)Migration created successfully!$(NC)"
 
 .PHONY: migrate
 migrate:
 	@echo "$(YELLOW)Applying migrations...$(NC)"
-	@cd $(SOURCE_DIR) && alembic upgrade head
+	@PYTHONPATH=$(SOURCE_DIR) $(UV) run --env-file $(ENV_FILE) alembic -c $(SOURCE_DIR)/alembic.ini upgrade head
 	@echo "$(GREEN)Migrations applied successfully!$(NC)"
 
 .PHONY: rollback-migration
 rollback-migration:
 	@echo "$(YELLOW)Rolling back last migration...$(NC)"
-	@cd $(SOURCE_DIR) && alembic downgrade -1
+	@PYTHONPATH=$(SOURCE_DIR) $(UV) run --env-file $(ENV_FILE) alembic -c $(SOURCE_DIR)/alembic.ini downgrade -1
 	@echo "$(GREEN)Migration rolled back successfully!$(NC)"
 
 .PHONY: migration-history
 migration-history:
 	@echo "$(YELLOW)Migration history:$(NC)"
-	@cd $(SOURCE_DIR) && alembic history --verbose
+	@PYTHONPATH=$(SOURCE_DIR) $(UV) run --env-file $(ENV_FILE) alembic -c $(SOURCE_DIR)/alembic.ini history --verbose
 
 .PHONY: db-current
 db-current:
 	@echo "$(YELLOW)Current database revision:$(NC)"
-	@cd $(SOURCE_DIR) && alembic current
+	@PYTHONPATH=$(SOURCE_DIR) $(UV) run --env-file $(ENV_FILE) alembic -c $(SOURCE_DIR)/alembic.ini current
 
 .PHONY: db-reset
 db-reset:
 	@echo "$(RED)WARNING: This will drop all database data!$(NC)"
 	@read -p "Are you sure? (y/N): " confirm && [ "$$confirm" = "y" ]
 	@echo "$(YELLOW)Resetting database...$(NC)"
-	@cd $(SOURCE_DIR) && alembic downgrade base
-	@cd $(SOURCE_DIR) && alembic upgrade head
+	@PYTHONPATH=$(SOURCE_DIR) $(UV) run --env-file $(ENV_FILE) alembic -c $(SOURCE_DIR)/alembic.ini downgrade base
+	@PYTHONPATH=$(SOURCE_DIR) $(UV) run --env-file $(ENV_FILE) alembic -c $(SOURCE_DIR)/alembic.ini upgrade head
 	@echo "$(GREEN)Database reset successfully!$(NC)"
 
 .PHONY: format
 format:
 	@echo "$(YELLOW)Formatting code...$(NC)"
-	@ruff format $(SOURCE_DIR) --line-length 79
+	@$(UV) run --env-file $(ENV_FILE) ruff format .
 	@echo "$(GREEN)Code formatted successfully!$(NC)"
 
 .PHONY: lint
 lint:
 	@echo "$(YELLOW)Linting code...$(NC)"
-	@ruff check $(SOURCE_DIR) --select=E,F,I,B,UP,N,SIM,PERF --fix --line-length 79
+	@$(UV) run --env-file $(ENV_FILE) ruff check .
 	@echo "$(GREEN)Code linted successfully!$(NC)"
 
 .PHONY: type-check
 type-check:
 	@echo "$(YELLOW)Type checking code...$(NC)"
-	@pyright $(SOURCE_DIR)
+	@$(UV) run --env-file $(ENV_FILE) pyright .
 	@echo "$(GREEN)Code type checked successfully!$(NC)"
 
 .PHONY: pre-commit
