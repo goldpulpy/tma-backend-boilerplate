@@ -20,8 +20,8 @@ help:
 	@echo "$(GREEN)Development Commands$(NC)"
 	@echo ""
 	@echo "$(YELLOW)Environment Setup:$(NC)"
-	@echo "  $(GREEN)venv$(NC) - Create virtual environment"
-	@echo "  $(GREEN)install$(NC) - Install dependencies"
+	@echo "  $(GREEN)install$(NC) - Create venv and install dependencies"
+	@echo "  $(GREEN)requirements$(NC) - Export dependencies to requirements.txt"
 	@echo "  $(GREEN)clean$(NC) - Clean development environment"
 	@echo ""
 	@echo "$(YELLOW)Application:$(NC)"
@@ -56,6 +56,12 @@ install: venv
 	@$(UV) sync
 	@echo "$(GREEN)Dependencies installed successfully!$(NC)"
 
+.PHONY: requirements
+requirements:
+	@echo "$(YELLOW)Exporting dependencies to requirements.txt...$(NC)"
+	@$(UV) export --no-dev --no-hashes > requirements.txt
+	@echo "$(GREEN)Dependencies exported successfully!$(NC)"
+
 .PHONY: run
 run:
 	@echo "$(YELLOW)Running application...$(NC)"
@@ -65,6 +71,7 @@ run:
 clean:
 	@echo "$(YELLOW)Cleaning development environment...$(NC)"
 	@rm -rf $(VENV)
+	@rm -rf $(ENV_FILE)
 	@rm -rf .ruff_cache
 	@find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	@echo "$(GREEN)Development environment cleaned!$(NC)"
@@ -115,19 +122,19 @@ db-reset:
 .PHONY: format
 format:
 	@echo "$(YELLOW)Formatting code...$(NC)"
-	@$(UV) run --env-file $(ENV_FILE) ruff format .
+	@$(UV) run ruff format .
 	@echo "$(GREEN)Code formatted successfully!$(NC)"
 
 .PHONY: lint
 lint:
 	@echo "$(YELLOW)Linting code...$(NC)"
-	@$(UV) run --env-file $(ENV_FILE) ruff check .
+	@$(UV) run ruff check .
 	@echo "$(GREEN)Code linted successfully!$(NC)"
 
 .PHONY: type-check
 type-check:
 	@echo "$(YELLOW)Type checking code...$(NC)"
-	@$(UV) run --env-file $(ENV_FILE) pyright .
+	@$(UV) run pyright .
 	@echo "$(GREEN)Code type checked successfully!$(NC)"
 
 .PHONY: pre-commit
