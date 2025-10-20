@@ -5,18 +5,18 @@ description = "Telegram Mini Apps backend boilerplate"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "aiogram==3.21.0",
-    "alembic==1.16.4",
+    "aiogram==3.22.0",
+    "alembic==1.17.0",
     "asyncpg==0.30.0",
-    "dependency-injector==4.48.1",
+    "dependency-injector==4.48.2",
     "fastapi==0.116.1",
-    "psycopg2-binary==2.9.10",
-    "pydantic-settings==2.10.1",
+    "psycopg2-binary==2.9.11",
+    "pydantic-settings==2.11.0",
     "pyjwt==2.10.1",
-    "scalar-fastapi==1.2.2",
+    "scalar-fastapi==1.4.3",
     "slowapi==0.1.9",
     "sqlalchemy==2.0.41",
-    "uvicorn==0.35.0",
+    "uvicorn==0.38.0",
 ]
 
 [dependency-groups]

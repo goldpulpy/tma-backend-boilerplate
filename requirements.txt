@@ -2,7 +2,7 @@
 #    uv export --no-dev --no-hashes
 aiofiles==24.1.0
     # via aiogram
-aiogram==3.21.0
+aiogram==3.22.0
     # via tma-backend-boilerplate
 aiohappyeyeballs==2.6.1
     # via aiohttp
@@ -10,7 +10,7 @@ aiohttp==3.12.15
     # via aiogram
 aiosignal==1.4.0
     # via aiohttp
-alembic==1.16.4
+alembic==1.17.0
     # via tma-backend-boilerplate
 annotated-types==0.7.0
     # via pydantic
@@ -26,7 +26,7 @@ click==8.3.0
     # via uvicorn
 colorama==0.4.6 ; sys_platform == 'win32'
     # via click
-dependency-injector==4.48.1
+dependency-injector==4.48.2
     # via tma-backend-boilerplate
 deprecated==1.2.18
     # via limits
@@ -62,7 +62,7 @@ propcache==0.4.1
     # via
     #   aiohttp
     #   yarl
-psycopg2-binary==2.9.10
+psycopg2-binary==2.9.11
     # via tma-backend-boilerplate
 pydantic==2.11.10
     # via
@@ -71,13 +71,13 @@ pydantic==2.11.10
     #   pydantic-settings
 pydantic-core==2.33.2
     # via pydantic
-pydantic-settings==2.10.1
+pydantic-settings==2.11.0
     # via tma-backend-boilerplate
 pyjwt==2.10.1
     # via tma-backend-boilerplate
 python-dotenv==1.1.1
     # via pydantic-settings
-scalar-fastapi==1.2.2
+scalar-fastapi==1.4.3
     # via tma-backend-boilerplate
 slowapi==0.1.9
     # via tma-backend-boilerplate
@@ -106,7 +106,7 @@ typing-inspection==0.4.2
     # via
     #   pydantic
     #   pydantic-settings
-uvicorn==0.35.0
+uvicorn==0.38.0
     # via tma-backend-boilerplate
 wrapt==1.17.3
     # via deprecated
