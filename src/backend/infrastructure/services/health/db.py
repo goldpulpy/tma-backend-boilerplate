@@ -22,11 +22,11 @@ class DatabaseHealthCheckService(IDatabaseHealthCheckService):
         """Initialize the database health check service."""
         self.session_factory = session_factory
 
-    async def check_connection(self, timeout: float = 5.0) -> bool:
+    async def check_connection(self, timeout_seconds: float = 5.0) -> bool:
         """Check database connection."""
         logger.debug("Checking database connection...")
         try:
-            async with asyncio.timeout(timeout):
+            async with asyncio.timeout(timeout_seconds):
                 async with self.session_factory() as session:
                     result = await session.execute(text("SELECT 1"))
                     value = result.scalar()

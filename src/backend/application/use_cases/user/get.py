@@ -2,7 +2,7 @@
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Callable
+from collections.abc import Callable
 
 from backend.application.services.uow import IUnitOfWork
 from backend.domain.entities.user import User

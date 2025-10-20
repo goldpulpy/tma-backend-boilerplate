@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
-
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Self
 
 from backend.application.services.uow import IUnitOfWork
 from backend.infrastructure.repositories.user import UserRepository
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from types import TracebackType
 
     from sqlalchemy.ext.asyncio import AsyncSession
