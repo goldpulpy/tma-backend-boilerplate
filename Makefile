@@ -39,7 +39,8 @@ help:
 	@echo "  $(GREEN)format$(NC) - Format code (ruff)"
 	@echo "  $(GREEN)lint$(NC) - Lint code (ruff)"
 	@echo "  $(GREEN)type-check$(NC) - Type check code (pyright)"
-	@echo "  $(GREEN)pre-commit$(NC) - Run pre-commit checks (format, lint, type-check)"
+	@echo "  $(GREEN)security$(NC) - Security check code (bandit)"
+	@echo "  $(GREEN)pre-commit$(NC) - Run pre-commit checks (format, lint, security, type-check)"
 	@echo ""
 
 .PHONY: venv
@@ -137,6 +138,12 @@ type-check:
 	@$(UV) run pyright .
 	@echo "$(GREEN)Code type checked successfully!$(NC)"
 
+.PHONY: security
+security:
+	@echo "$(YELLOW)Security checking code...$(NC)"
+	@$(UV) run bandit -r $(SOURCE_DIR)
+	@echo "$(GREEN)Code security checked successfully!$(NC)"
+
 .PHONY: pre-commit
-pre-commit: format lint type-check
+pre-commit: format lint security type-check
 	@echo "$(GREEN)Pre-commit checks completed successfully!$(NC)"

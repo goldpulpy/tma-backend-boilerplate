@@ -21,6 +21,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "bandit>=1.8.6",
     "pre-commit>=4.3.0",
     "pyright>=1.1.406",
     "ruff>=0.14.1",

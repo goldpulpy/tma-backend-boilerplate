@@ -23,7 +23,7 @@ class BaseConfig(BaseSettings):
 class APPConfig(BaseConfig):
     """APP config class."""
 
-    host: str = "0.0.0.0"  # noqa: S104
+    host: str = "0.0.0.0"  # noqa: S104 # nosec
     port: int = Field(default=5000, ge=1, le=65535)
     bot_token: str
     allowed_origins: str

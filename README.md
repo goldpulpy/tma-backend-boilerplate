@@ -260,20 +260,21 @@ make requirements # for export to requirements.txt
 
 ## 🛠️ Makefile Commands
 
-| Command                             | Description                                         |
-| ----------------------------------- | --------------------------------------------------- |
-| `make install`                      | 📦 Create venv and install dependencies             |
-| `make requirements`                 | 📝 Export dependencies to requirements.txt          |
-| `make clean`                        | 🧹 Clean                                            |
-| `make run`                          | 🚀 Run the application                              |
-| `make create-migration m='Message'` | ➕ Create a new migration                           |
-| `make migrate`                      | 🔄 Apply all pending migrations                     |
-| `make rollback-migration`           | ⏪ Rollback the last migration                      |
-| `make db-reset`                     | 🗑️ Reset the database                               |
-| `make lint`                         | 🔍 Run ruff for code analysis                       |
-| `make type-check`                   | ✓ Run pyright for type checking                     |
-| `make format`                       | ✨ Format code with ruff                            |
-| `make pre-commit`                   | 🔄 Run pre-commit checks (format, lint, type-check) |
+| Command                             | Description                                                  |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `make install`                      | 📦 Create venv and install dependencies                      |
+| `make requirements`                 | 📝 Export dependencies to requirements.txt                   |
+| `make clean`                        | 🧹 Clean                                                     |
+| `make run`                          | 🚀 Run the application                                       |
+| `make create-migration m='Message'` | ➕ Create a new migration                                    |
+| `make migrate`                      | 🔄 Apply all pending migrations                              |
+| `make rollback-migration`           | ⏪ Rollback the last migration                               |
+| `make db-reset`                     | 🗑️ Reset the database                                        |
+| `make lint`                         | 🔍 Run ruff for code analysis                                |
+| `make type-check`                   | ✓ Run pyright for type checking                              |
+| `make format`                       | ✨ Format code with ruff                                     |
+| `make security`                     | 🚨 Run bandit for security analysis                          |
+| `make pre-commit`                   | 🔄 Run pre-commit checks (format, lint, security type-check) |
 
 ## 📄 Base points
 
@@ -389,6 +390,7 @@ The project uses several tools to ensure code quality:
 
 - **Ruff** - 🧹 Code formatter that enforces a consistent style and linting
 - **Pyright** - 🔍 Static type checker for Python
+- **Bandit** - 🔒 Security checker
 
 Run these tools using the commands listed in the Makefile Commands section.
 
@@ -396,8 +398,13 @@ Run these tools using the commands listed in the Makefile Commands section.
 
 This project uses pre-commit hooks to ensure code quality before committing changes. The pre-commit configuration automatically runs:
 
+- **trailing-whitespace** - 🧹 Remove trailing whitespace
+- **end-of-file-fixer** - 🧹 Ensure files end with a newline
+- **check-yaml** - 🧹 Validate YAML files
+- **check-added-large-files** - 🧹 Prevent large files from being committed
 - **Ruff** - 🧹 For linting and formatting
 - **pyright** - 🔍 For type checking
+- **bandit** - 🔒 For security checks
 
 ### 🔧 Installation
 
