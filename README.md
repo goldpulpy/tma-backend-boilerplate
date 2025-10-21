@@ -9,10 +9,12 @@
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-black.svg)
 ![Type checked: pyright](https://img.shields.io/badge/type%20checked-pyright-blue.svg)
+![Security checked: bandit](https://img.shields.io/badge/security%20checked-bandit-brightgreen.svg)
 
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-316192.svg?logo=postgresql&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-ready-DC382D.svg?logo=redis&logoColor=white)
+![RabbitMQ](https://img.shields.io/badge/RabbitMQ-ready-FF6600.svg?logo=rabbitmq&logoColor=white)
 
 ![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF.svg?logo=github-actions&logoColor=white)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
@@ -56,7 +58,7 @@ Built with FastAPI, SQLAlchemy, and modern Python tooling to help you ship faste
 
 ## 🐳 Local Development Environment
 
-This project includes a lightweight **docker-compose setup** for running PostgreSQL and Redis locally during development.
+This project includes a lightweight **docker-compose setup** for running PostgreSQL, Redis and RabbitMQ locally during development.
 
 ### 📁 Folder structure
 
