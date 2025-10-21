@@ -270,10 +270,10 @@ make requirements # for export to requirements.txt
 | `make migrate`                      | 🔄 Apply all pending migrations                              |
 | `make rollback-migration`           | ⏪ Rollback the last migration                               |
 | `make db-reset`                     | 🗑️ Reset the database                                        |
-| `make lint`                         | 🔍 Run ruff for code analysis                                |
-| `make type-check`                   | ✓ Run pyright for type checking                              |
 | `make format`                       | ✨ Format code with ruff                                     |
+| `make lint`                         | 🔍 Run ruff for code analysis                                |
 | `make security`                     | 🚨 Run bandit for security analysis                          |
+| `make type-check`                   | ✓ Run pyright for type checking                              |
 | `make pre-commit`                   | 🔄 Run pre-commit checks (format, lint, security type-check) |
 
 ## 📄 Base points
