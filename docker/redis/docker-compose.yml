@@ -11,7 +11,11 @@ services:
       - redis_data:/data
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-toor}
+      TZ: ${TZ:-UTC}
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-toor}"]
+    mem_limit: 256m
+    cpus: 0.25
+    stop_grace_period: 30s
     healthcheck:
       test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-toor}", "ping"]
       interval: 10s

@@ -14,6 +14,9 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    mem_limit: 512m
+    cpus: 0.5
+    stop_grace_period: 30s
     healthcheck:
       test:
         [
@@ -35,6 +38,8 @@ services:
       - "8080:8080"
     environment:
       ADMINER_DEFAULT_SERVER: postgres
+    mem_limit: 256m
+    cpus: 0.25
 
 volumes:
   postgres_data:

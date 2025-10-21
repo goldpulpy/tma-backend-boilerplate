@@ -63,12 +63,13 @@ This project includes a lightweight **docker-compose setup** for running Postgre
 ```
 docker/
 ├── postgres
-└── redis
+├── redis
+└── rabbitmq
 ```
 
-### 🐘 PostgreSQL
-
 <details>
+
+<summary>🐘 PostgreSQL</summary>
 
 #### ▶️ Run PostgreSQL container
 
@@ -111,9 +112,9 @@ docker compose -f docker/postgres/docker-compose.yml down --volumes
 
 </details>
 
-### 🔴 Redis (if needed)
-
 <details>
+
+<summary>🔴 Redis (if needed)</summary>
 
 #### ▶️ Run Redis container
 
@@ -160,6 +161,61 @@ docker compose -f docker/redis/docker-compose.yml down
 # or if you want to remove data
 
 docker compose -f docker/redis/docker-compose.yml down --volumes
+```
+
+</details>
+
+<details>
+
+<summary>🐇 RabbitMQ (if needed)</summary>
+
+#### ▶️ Run RabbitMQ container
+
+From the project root, execute:
+
+```bash
+docker compose -f docker/rabbitmq/docker-compose.yml up -d
+```
+
+This will start a RabbitMQ broker with the management UI.
+
+**Default configuration:**
+
+- AMQP Port: `5672`
+- Management UI: [http://localhost:15672](http://localhost:15672)
+- User: `root`
+- Password: `toor`
+- VHost: `/`
+
+#### 🔧 Custom RabbitMQ Configuration
+
+To use different credentials, modify `docker/rabbitmq/docker-compose.yml`:
+
+- Update `RABBITMQ_USER`, `RABBITMQ_PASS`, `RABBITMQ_VHOST`
+- Update corresponding values in `.env` file
+- Restart container: `docker compose -f docker/rabbitmq/docker-compose.yml restart`
+
+#### 🧪 Test RabbitMQ connection
+
+You can use the built-in management UI:
+
+[http://localhost:15672](http://localhost:15672)
+
+Or connect from code using URI:
+
+```bash
+amqp://root:toor@localhost:5672/
+
+```
+
+#### 🧹 Stop and remove RabbitMQ container
+
+```bash
+docker compose -f docker/rabbitmq/docker-compose.yml down
+
+# or if you want to remove persisted message queues and data
+
+docker compose -f docker/rabbitmq/docker-compose.yml down --volumes
 ```
 
 </details>
@@ -430,20 +486,22 @@ pre-commit run --all-files
 
 <details>
 
-### Security
+<summary>Best Practices</summary>
 
-- Use strong JWT_SECRET (min 32 random characters)
-- Set specific ALLOWED_ORIGINS (never use `*` in production)
-- Enable HTTPS with valid SSL certificate
+### 🔒 Security
+
+- Use strong `JWT_SECRET` (min 32 random characters)
+- Set specific `ALLOWED_ORIGINS` (never use `*` in production)
+- Enable **HTTPS** with valid SSL certificate
 - Use environment variables for all secrets
 - Never commit `.env` files to git
 - Use non-root user in Docker containers
 - Keep dependencies updated regularly
 - Implement rate limiting (SlowAPI is already configured)
-- Set up proper CORS policies
+- Set up proper **CORS** policies
 - Enable security headers in Nginx
 
-### Database
+### 📦 Database
 
 - Use connection pooling
 - Set up automated backups
@@ -451,6 +509,26 @@ pre-commit run --all-files
 - Use read replicas for scaling (if needed)
 - Monitor database performance
 - Set appropriate connection limits
+- Use **ACID** transactions
+
+### 🚀 Infrastructure
+
+- Implement **blue-green** or **rolling** deployments
+- Implement **CI/CD** pipeline (GitHub Actions/GitLab CI)
+- Use container registry (Docker Hub/ECR/GCR)
+- Set up health checks for all services
+
+### ⚡ Performance
+
+- Enable **Redis** caching for frequent queries
+- Use database indexing on foreign keys and search fields
+- Implement query optimization (avoid N+1 problems)
+- Enable **Gzip** compression in Nginx
+- Use **CDN** for static assets
+- Implement lazy loading for large datasets
+- Enable **HTTP/2** in web server
+- Use connection pooling (SQLAlchemy engine pool)
+- Optimize image delivery (WebP, responsive images)
 
 </details>
 
