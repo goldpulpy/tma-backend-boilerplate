@@ -19,8 +19,8 @@
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/ruff.yaml?label=ruff)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/pyright.yaml?label=pyright)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/docker.yaml?label=docker)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/bandit.yaml?label=bandit)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/docker.yaml?label=docker)
 
 </div>
 
@@ -521,18 +521,6 @@ pre-commit run --all-files
 - Implement **CI/CD** pipeline (GitHub Actions/GitLab CI)
 - Use container registry (Docker Hub/ECR/GCR)
 - Set up health checks for all services
-
-### ⚡ Performance
-
-- Enable **Redis** caching for frequent queries
-- Use database indexing on foreign keys and search fields
-- Implement query optimization (avoid N+1 problems)
-- Enable **Gzip** compression in Nginx
-- Use **CDN** for static assets
-- Implement lazy loading for large datasets
-- Enable **HTTP/2** in web server
-- Use connection pooling (SQLAlchemy engine pool)
-- Optimize image delivery (WebP, responsive images)
 
 </details>
 
