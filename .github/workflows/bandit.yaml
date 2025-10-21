@@ -1,7 +1,10 @@
-name: Ruff
+name: Bandit
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -20,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff
-      - name: Analysing the code with ruff
+          pip install bandit
+      - name: Analysing the code with bandit
         run: |
-          ruff check src/ --line-length 79 --select=E,F,I,B,UP,SIM,PERF
+          bandit -r -c pyproject.toml src/

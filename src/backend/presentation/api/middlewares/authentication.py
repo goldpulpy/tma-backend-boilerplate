@@ -1,8 +1,8 @@
 """Authentication middleware."""
 
 import logging
-from collections.abc import Awaitable
-from typing import Callable, ClassVar
+from collections.abc import Awaitable, Callable
+from typing import ClassVar
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
