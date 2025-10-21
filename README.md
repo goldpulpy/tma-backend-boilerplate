@@ -1,15 +1,12 @@
 <div align="center">
   <h1>TMA Backend Boilerplate 🚀</h1>
 
-![Telegram](https://img.shields.io/badge/Telegram-backend-blue?logo=telegram)
+![Telegram](https://img.shields.io/badge/Telegram-TMA-blue?logo=telegram)
 
 ![Python](https://img.shields.io/badge/python-3.12+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0+-red.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-black.svg)
-![Type checked: pyright](https://img.shields.io/badge/type%20checked-pyright-blue.svg)
-![Security checked: bandit](https://img.shields.io/badge/security%20checked-bandit-brightgreen.svg)
 
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-316192.svg?logo=postgresql&logoColor=white)
@@ -19,6 +16,11 @@
 ![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF.svg?logo=github-actions&logoColor=white)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/ruff.yaml?label=ruff)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/pyright.yaml?label=pyright)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/docker.yaml?label=docker)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goldpulpy/tma-backend-boilerplate/bandit.yaml?label=bandit)
 
 </div>
 
@@ -78,7 +80,7 @@ docker/
 From the project root, execute:
 
 ```bash
-docker compose -f docker/postgres/docker-compose.yml up -d
+docker compose -f docker/postgres/docker-compose.yaml up -d
 ```
 
 This will start a PostgreSQL container with the configured environment.
@@ -96,20 +98,20 @@ Select the `PostgreSQL` database and log in with the provided credentials.
 
 #### 🔧 Custom PostgreSQL Configuration
 
-To use different credentials, modify `docker/postgres/docker-compose.yml`:
+To use different credentials, modify `docker/postgres/docker-compose.yaml`:
 
 - Update `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`
 - Update corresponding values in `.env` file
-- Restart container: `docker compose -f docker/postgres/docker-compose.yml restart`
+- Restart container: `docker compose -f docker/postgres/docker-compose.yaml restart`
 
 #### 🧹 Stop and remove PostgreSQL container
 
 ```bash
-docker compose -f docker/postgres/docker-compose.yml down
+docker compose -f docker/postgres/docker-compose.yaml down
 
 # or if you want to remove data
 
-docker compose -f docker/postgres/docker-compose.yml down --volumes
+docker compose -f docker/postgres/docker-compose.yaml down --volumes
 ```
 
 </details>
@@ -123,7 +125,7 @@ docker compose -f docker/postgres/docker-compose.yml down --volumes
 From the project root, execute:
 
 ```bash
-docker compose -f docker/redis/docker-compose.yml up -d
+docker compose -f docker/redis/docker-compose.yaml up -d
 ```
 
 This will start a Redis container with the configured environment.
@@ -136,12 +138,12 @@ This will start a Redis container with the configured environment.
 
 #### 🔧 Custom Redis Configuration
 
-To use different settings, modify `docker/redis/docker-compose.yml`:
+To use different settings, modify `docker/redis/docker-compose.yaml`:
 
 - Update `REDIS_PASSWORD` if authentication is needed or remove the line
 - Update port mapping if necessary
 - Update corresponding values in `.env` file
-- Restart container: `docker compose -f docker/redis/docker-compose.yml restart`
+- Restart container: `docker compose -f docker/redis/docker-compose.yaml restart`
 
 #### 🧪 Test Redis connection
 
@@ -158,11 +160,11 @@ Expected response: `PONG`
 #### 🧹 Stop and remove Redis container
 
 ```bash
-docker compose -f docker/redis/docker-compose.yml down
+docker compose -f docker/redis/docker-compose.yaml down
 
 # or if you want to remove data
 
-docker compose -f docker/redis/docker-compose.yml down --volumes
+docker compose -f docker/redis/docker-compose.yaml down --volumes
 ```
 
 </details>
@@ -176,7 +178,7 @@ docker compose -f docker/redis/docker-compose.yml down --volumes
 From the project root, execute:
 
 ```bash
-docker compose -f docker/rabbitmq/docker-compose.yml up -d
+docker compose -f docker/rabbitmq/docker-compose.yaml up -d
 ```
 
 This will start a RabbitMQ broker with the management UI.
@@ -191,11 +193,11 @@ This will start a RabbitMQ broker with the management UI.
 
 #### 🔧 Custom RabbitMQ Configuration
 
-To use different credentials, modify `docker/rabbitmq/docker-compose.yml`:
+To use different credentials, modify `docker/rabbitmq/docker-compose.yaml`:
 
 - Update `RABBITMQ_USER`, `RABBITMQ_PASS`, `RABBITMQ_VHOST`
 - Update corresponding values in `.env` file
-- Restart container: `docker compose -f docker/rabbitmq/docker-compose.yml restart`
+- Restart container: `docker compose -f docker/rabbitmq/docker-compose.yaml restart`
 
 #### 🧪 Test RabbitMQ connection
 
@@ -213,11 +215,11 @@ amqp://root:toor@localhost:5672/
 #### 🧹 Stop and remove RabbitMQ container
 
 ```bash
-docker compose -f docker/rabbitmq/docker-compose.yml down
+docker compose -f docker/rabbitmq/docker-compose.yaml down
 
 # or if you want to remove persisted message queues and data
 
-docker compose -f docker/rabbitmq/docker-compose.yml down --volumes
+docker compose -f docker/rabbitmq/docker-compose.yaml down --volumes
 ```
 
 </details>
