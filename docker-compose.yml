@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  tma-backend-boilerplate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: tma-backend-boilerplate
+
+    env_file:
+      - .env
+
+    ports:
+      - "5000:5000"
+
+    restart: unless-stopped
+
+    mem_limit: 512m
+    cpus: 0.5
+
+    stop_grace_period: 30s
+
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
